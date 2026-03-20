@@ -1,66 +1,49 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Hero from "@/components/Hero";
+import FeaturedProducts from "@/components/FeaturedProducts";
+import TrustSection from "@/components/TrustSection";
+import CTA from "@/components/CTA";
+import { AlertCircle } from "lucide-react";
 
-export default function Home() {
+async function getHealth() {
+  try {
+    const base = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3456';
+    const res = await fetch(`${base}/api/health`, {
+      next: { revalidate: 60 }
+    });
+    if (!res.ok) return null;
+    return res.json();
+  } catch (error) {
+    return null;
+  }
+}
+
+export default async function Home() {
+  const healthData = await getHealth();
+  const isDbError = !healthData || healthData.database !== 'connected';
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="flex flex-col gap-0">
+      {/* Hero Section */}
+      <Hero />
+
+      {/* Database Warning Banner (Only visible if DB is disconnected) */}
+      {isDbError && (
+        <div className="bg-orange-50 border-b border-orange-100 py-3 px-4">
+          <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-orange-700 text-sm font-medium">
+            <AlertCircle size={16} />
+            <span>Database not connected. Showing demonstration data. Please check your .env.local settings.</span>
+          </div>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      )}
+
+      {/* Product Showcase Section */}
+      <FeaturedProducts />
+
+      {/* Trust & Social Proof Section */}
+      <TrustSection />
+
+      {/* Call to Action Section */}
+      <CTA />
     </div>
   );
 }
