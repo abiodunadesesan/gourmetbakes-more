@@ -1,5 +1,4 @@
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import OrderLookup from '@/components/OrderLookup';
 
 export const metadata = {
@@ -29,8 +28,6 @@ export default function TrackOrderPage() {
                     <OrderLookup />
                 </div>
             </div>
-
-            <Footer />
-        </main>
+</main>
     );
 }

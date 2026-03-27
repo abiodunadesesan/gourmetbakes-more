@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Truck, Loader2, Building2, Package, User, Clock, CreditCard } from 'lucide-react';
+import { Truck, Loader2, Building2, Package, User, Clock, CreditCard, AlertCircle } from 'lucide-react';
 import ProductPicker from './ProductPicker';
 import BulkOrderConfirmation from './BulkOrderConfirmation';
 import BulkOrderError from './BulkOrderError';

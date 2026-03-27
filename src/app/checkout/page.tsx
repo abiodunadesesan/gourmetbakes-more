@@ -1,5 +1,4 @@
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import CheckoutForm from '@/components/CheckoutForm';
 
 export const metadata = {
@@ -26,8 +25,6 @@ export default function CheckoutPage() {
                     <CheckoutForm />
                 </div>
             </div>
-
-            <Footer />
-        </main>
+</main>
     );
 }

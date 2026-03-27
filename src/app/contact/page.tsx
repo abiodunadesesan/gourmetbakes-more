@@ -1,16 +1,15 @@
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { MessageCircle, Phone, Mail, MapPin, Clock } from "lucide-react";
 
 export default function ContactPage() {
-    const bizPhone = process.env.NEXT_PUBLIC_BUSINESS_PHONE || "+2348000000000";
+    const bizPhone = process.env.NEXT_PUBLIC_BUSINESS_PHONE || "+905338585872";
 
     return (
         <div className="min-h-screen bg-[#FAFAFA]">
             <Navbar />
-            
+
             <main className="pt-32 pb-20">
                 <div className="container mx-auto px-4 max-w-6xl">
                     {/* Header */}
@@ -35,7 +34,7 @@ export default function ContactPage() {
                                 <p className="text-slate-500 text-sm mb-6 leading-relaxed">
                                     The quickest way to get an answer. Chat with us directly for orders or inquiries.
                                 </p>
-                                <WhatsAppButton 
+                                <WhatsAppButton
                                     phoneNumber={bizPhone}
                                     buttonText="Chat Now"
                                     className="w-full"
@@ -59,7 +58,7 @@ export default function ContactPage() {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-slate-900">Email Us</h3>
-                                    <p className="text-slate-500 text-sm">hello@gourmetbakes.com.ng</p>
+                                    <p className="text-slate-500 text-sm">victoryailele14@gmail.com</p>
                                     <p className="text-[10px] text-slate-400 font-bold uppercase mt-1">Response within 24h</p>
                                 </div>
                             </div>
@@ -93,13 +92,13 @@ export default function ContactPage() {
                                 </p>
                             </div>
                             <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-                                <a 
+                                <a
                                     href="/contact/catering"
                                     className="px-8 py-5 bg-white text-slate-900 rounded-2xl font-black text-center transition-all hover:bg-orange-500 hover:text-white"
                                 >
                                     Catering Inquiry
                                 </a>
-                                <a 
+                                <a
                                     href="/contact/bulk-order"
                                     className="px-8 py-5 bg-transparent text-white border-2 border-slate-800 rounded-2xl font-black text-center transition-all hover:border-white"
                                 >
@@ -110,8 +109,6 @@ export default function ContactPage() {
                     </div>
                 </div>
             </main>
-
-            <Footer />
-        </div>
+</div>
     );
 }

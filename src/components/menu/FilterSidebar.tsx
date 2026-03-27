@@ -162,7 +162,7 @@ export default function FilterSidebar({
                 <div className="relative z-10">
                     <h5 className="text-white font-bold mb-2">Need Catering?</h5>
                     <p className="text-slate-400 text-xs mb-4 leading-relaxed">Planning a celebration? We offer custom platters and bulk orders.</p>
-                    <a href="https://wa.me/2348001234567" className="text-orange-400 text-xs font-bold hover:text-orange-300 transition-colors flex items-center gap-1 group/link">
+                    <a href="https://wa.me/905338585872" className="text-orange-400 text-xs font-bold hover:text-orange-300 transition-colors flex items-center gap-1 group/link">
                         WhatsApp Us
                         <ChevronRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
                     </a>

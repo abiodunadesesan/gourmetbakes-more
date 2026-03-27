@@ -14,27 +14,33 @@
   --font-serif: var(--font-playfair), serif;
 
   --animate-pulse-slow: pulse-slow 3s ease-in-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
 
   @keyframes pulse-slow {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.7; }
+  }
 
-    0%,
-    100% {
-      opacity: 1;
-    }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(-12deg); }
+    50%      { transform: translateY(-16px) rotate(-12deg); }
+  }
 
-    50% {
-      opacity: 0.7;
-    }
+  @keyframes shimmer {
+    from { background-position: -200% center; }
+    to   { background-position:  200% center; }
   }
 }
 
+/* ─── Base ─────────────────────────────────────────────────────────── */
 body {
   color: var(--color-foreground);
   background: var(--color-background);
   scroll-behavior: smooth;
 }
 
-/* Gradient fade for hero background */
+/* ─── Hero gradient ─────────────────────────────────────────────────── */
 .hero-gradient {
   background: linear-gradient(135deg,
       #fff7ed 0%,
@@ -43,31 +49,70 @@ body {
       #fdba74 100%);
 }
 
-/* Status card glow on hover */
+/* ─── Scroll-triggered fade-in animation ────────────────────────────── */
+/* Apply .reveal to any element and observe with IntersectionObserver   */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children inside .reveal-stagger */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-stagger.visible > *:nth-child(1)  { opacity: 1; transform: none; transition-delay: 0ms; }
+.reveal-stagger.visible > *:nth-child(2)  { opacity: 1; transform: none; transition-delay: 80ms; }
+.reveal-stagger.visible > *:nth-child(3)  { opacity: 1; transform: none; transition-delay: 160ms; }
+.reveal-stagger.visible > *:nth-child(4)  { opacity: 1; transform: none; transition-delay: 240ms; }
+.reveal-stagger.visible > *:nth-child(5)  { opacity: 1; transform: none; transition-delay: 320ms; }
+.reveal-stagger.visible > *:nth-child(6)  { opacity: 1; transform: none; transition-delay: 400ms; }
+.reveal-stagger.visible > *:nth-child(n+7){ opacity: 1; transform: none; transition-delay: 480ms; }
+
+/* ─── Status / trust cards ──────────────────────────────────────────── */
 .status-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .status-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 32px rgba(249, 115, 22, 0.15);
 }
 
-/* Connected-indicator dot pulse */
+/* ─── Dot pulse for connected indicator ─────────────────────────────── */
 @keyframes dot-pulse {
+  0%, 100% { transform: scale(1);   opacity: 1;   }
+  50%       { transform: scale(1.4); opacity: 0.6; }
+}
+.dot-pulse { animation: dot-pulse 2s ease-in-out infinite; }
 
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+/* ─── Floating badge animation (Hero) ──────────────────────────────── */
+.float-badge { animation: float 6s ease-in-out infinite; }
 
-  50% {
-    transform: scale(1.4);
-    opacity: 0.6;
-  }
+/* ─── Skeleton shimmer ─────────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg,
+    #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
 }
 
-.dot-pulse {
-  animation: dot-pulse 2s ease-in-out infinite;
+/* ─── Hide native scrollbar (used on mobile filter panel) ─────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─── Page-transition fade ─────────────────────────────────────────── */
+@keyframes page-fade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+.page-enter { animation: page-fade-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }

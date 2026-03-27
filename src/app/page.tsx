@@ -6,7 +6,7 @@ import { AlertCircle } from "lucide-react";
 
 async function getHealth() {
   try {
-    const base = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3456';
+    const base = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
     const res = await fetch(`${base}/api/health`, {
       next: { revalidate: 60 }
     });

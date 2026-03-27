@@ -3,7 +3,6 @@
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import OrderConfirmation from '@/components/OrderConfirmation';
 
 function ConfirmationContent() {
@@ -38,8 +37,6 @@ export default function ConfirmationPage() {
                     <ConfirmationContent />
                 </Suspense>
             </div>
-
-            <Footer />
-        </main>
+</main>
     );
 }

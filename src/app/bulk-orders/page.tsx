@@ -1,5 +1,4 @@
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import BulkOrderForm from "@/components/BulkOrderForm";
 import { Package, ShieldCheck, Zap } from "lucide-react";
 
@@ -25,12 +24,12 @@ export default function BulkOrdersPage() {
                             <p className="text-xl md:text-2xl font-medium text-orange-50 mb-12 leading-relaxed">
                                 Order 50+ units and get personalized support. Perfect for weddings, corporate gifts, and resellers seeking authentic Nigerian quality.
                             </p>
-                            <button 
-                                onClick={() => document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' })}
-                                className="px-12 py-5 bg-white text-orange-600 font-black rounded-2xl shadow-xl hover:bg-orange-50 transition-all active:scale-95"
+                            <a 
+                                href="#order-form"
+                                className="inline-block px-12 py-5 bg-white text-orange-600 font-black rounded-2xl shadow-xl hover:bg-orange-50 transition-all active:scale-95"
                             >
                                 Start Your Bulk Order
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </section>
@@ -77,8 +76,6 @@ export default function BulkOrdersPage() {
                     </div>
                 </section>
             </main>
-
-            <Footer />
-        </div>
+</div>
     );
 }

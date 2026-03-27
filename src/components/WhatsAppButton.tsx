@@ -13,7 +13,7 @@ interface WhatsAppButtonProps {
 
 export default function WhatsAppButton({
     phoneNumber,
-    message = "Hi GourmetBakes",
+    message = "Hi Gourmet Bakes & More",
     buttonText = "Open WhatsApp",
     className = "",
     showIcon = true

@@ -13,7 +13,7 @@ export default function FounderSection() {
                         <div className="relative aspect-square overflow-hidden rounded-[2rem] border-8 border-white shadow-2xl">
                             <img
                                 src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=800&auto=format&fit=crop"
-                                alt="Chioma, Founder of GourmetBakes & More"
+                                alt="VeeJb, Founder of GourmetBakes & More"
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />
                         </div>
@@ -33,20 +33,20 @@ export default function FounderSection() {
                                 The Heart of the Kitchen
                             </span>
                             <h2 className="text-4xl md:text-5xl font-serif font-bold text-slate-900 mb-6 leading-tight">
-                                Meet Chioma, <br />
+                                Meet VeeJb, <br />
                                 <span className="text-orange-500">Founder & Head Baker</span>
                             </h2>
                         </div>
 
                         <div className="space-y-6 text-slate-500 text-lg font-medium leading-relaxed">
                             <p>
-                                Growing up in Lagos, Chioma spent her childhood in her grandmother's kitchen, learning the secrets of authentic Nigerian baking. Every recipe, every technique, every flavor was passed down with love and pride—a legacy she's determined to share with the world.
+                                Growing up in Benin City, Edo State, VeeJb spent her childhood in her grandmother's kitchen, learning the secrets of authentic Nigerian baking. Every recipe, every technique, every flavor was passed down with love and pride—a legacy she's determined to share with the world.
                             </p>
                             <p>
-                                After years of perfecting her craft and building a loyal following through word-of-mouth, Chioma realized that authentic Nigerian delicacies deserved a proper home online. GourmetBakes & More was born from a simple belief: that food is more than sustenance—it's connection, culture, and love on a plate.
+                                After years of perfecting her craft and building a loyal following through word-of-mouth, VeeJb realized that authentic Nigerian delicacies deserved a proper home online. GourmetBakes & More was born from a simple belief: that food is more than sustenance—it's connection, culture, and love on a plate.
                             </p>
                             <p>
-                                Today, Chioma leads a team of passionate bakers dedicated to bringing the warmth and authenticity of Nigerian cuisine to food lovers everywhere, whether they're craving a taste of home or discovering Nigerian flavors for the first time.
+                                Today, VeeJb leads a team of passionate bakers dedicated to bringing the warmth and authenticity of Nigerian cuisine to food lovers everywhere, whether they're craving a taste of home or discovering Nigerian flavors for the first time.
                             </p>
                         </div>
 

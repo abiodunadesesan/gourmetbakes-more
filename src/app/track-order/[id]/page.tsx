@@ -1,5 +1,4 @@
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import OrderStatusView from '@/components/OrderStatusView';
 
 export const metadata = {
@@ -18,8 +17,6 @@ export default async function OrderStatusPage({ params }: { params: Promise<{ id
                     <OrderStatusView orderId={id} />
                 </div>
             </div>
-
-            <Footer />
-        </main>
+</main>
     );
 }

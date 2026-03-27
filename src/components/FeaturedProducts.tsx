@@ -33,11 +33,26 @@ export default function FeaturedProducts() {
         fetchProducts(activeCategory);
     }, [activeCategory, fetchProducts]);
 
+    // Activate scroll-reveal for featured section
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            }),
+            { threshold: 0.1 }
+        );
+        document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => observer.observe(el));
+        return () => observer.disconnect();
+    }, [products]);
+
     return (
         <section id="menu" className="py-24 bg-white relative overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
-                <div className="text-center mb-12">
+                <div className="reveal text-center mb-12">
                     <span className="text-orange-600 text-xs uppercase tracking-[0.4em] font-bold mb-4 block">
                         Our Bestsellers
                     </span>
@@ -82,7 +97,7 @@ export default function FeaturedProducts() {
                             <p className="text-slate-500">We're currently updating our menu for this category.</p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 animate-in fade-in slide-in-from-bottom-5 duration-700">
+                        <div className="reveal-stagger grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                             {products.map((product) => (
                                 <ProductCard key={product.product_id} product={product} />
                             ))}
@@ -93,7 +108,7 @@ export default function FeaturedProducts() {
                 {/* View Full Menu CTA */}
                 <div className="text-center mt-20">
                     <Link
-                        href="/products"
+                        href="/menu"
                         className="group inline-flex items-center gap-3 text-slate-900 font-bold uppercase tracking-widest text-sm hover:text-orange-500 transition-all duration-300"
                     >
                         <span className="border-b-2 border-orange-100 group-hover:border-orange-500 transition-all pb-1">

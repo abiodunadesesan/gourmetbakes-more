@@ -70,7 +70,7 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-black text-slate-900 mb-4 font-serif">Order Placed Successfully!</h1>
                 <p className="text-slate-600 font-medium">
-                    Thank you for your order, <span className="text-slate-900 font-bold">{order.customer_name}</span>. 
+                    Thank you for your order, <span className="text-slate-900 font-bold">{order.customer_name}</span>.
                     A confirmation message has been sent to your WhatsApp number.
                 </p>
             </div>
@@ -128,7 +128,7 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
                 {/* Items Summary */}
                 <div className="bg-white border border-slate-100 rounded-3xl p-6 sm:p-8 space-y-6">
                     <h2 className="text-xl font-bold text-slate-900 font-serif pb-4 border-b border-slate-50">Ordered Items</h2>
-                    
+
                     <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
                         {(order as any).order_items?.map((item: any) => (
                             <div key={item.order_item_id} className="flex gap-4 items-center group">
@@ -188,7 +188,7 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
 
             <div className="text-center">
                 <Link
-                    href="https://wa.me/2348001234567"
+                    href="https://wa.me/905338585872"
                     target="_blank"
                     className="inline-flex items-center gap-2 text-slate-500 hover:text-green-600 font-bold transition-colors group"
                 >

@@ -11,10 +11,10 @@ const MOCK_PRODUCTS: Product[] = [
         short_description: 'Golden flaky crust with savory beef filling.',
         price: 1500,
         category: 'Meat Pies',
-        image_url: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop',
+        image_url: 'https://images.unsplash.com/photo-1601000223933-4df452ce644c?q=80&w=800&auto=format&fit=crop',
         image_gallery: [
-            'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1601000223933-4df452ce644c?q=80&w=800&auto=format&fit=crop'
+            'https://images.unsplash.com/photo-1601000223933-4df452ce644c?q=80&w=800&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop'
         ],
         stock_quantity: 50,
         is_available: true,
@@ -49,10 +49,10 @@ const MOCK_PRODUCTS: Product[] = [
         short_description: 'Rich red velvet with premium cream cheese frosting.',
         price: 15000,
         category: 'Cakes',
-        image_url: 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?q=80&w=800&auto=format&fit=crop',
+        image_url: 'https://images.unsplash.com/photo-1535141192574-5d4897c12636?q=80&w=800&auto=format&fit=crop',
         image_gallery: [
-            'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?q=80&w=800&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1535141192574-5d4897c12636?q=80&w=800&auto=format&fit=crop'
+            'https://images.unsplash.com/photo-1535141192574-5d4897c12636?q=80&w=800&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1621303837174-89787a7d4729?q=80&w=800&auto=format&fit=crop'
         ],
         stock_quantity: 10,
         is_available: true,
@@ -69,7 +69,7 @@ const MOCK_PRODUCTS: Product[] = [
         short_description: 'Savory fish filling with a hint of Nigerian spice.',
         price: 1200,
         category: 'Fish Pies',
-        image_url: 'https://images.unsplash.com/photo-1601050633722-343d736b11fb?q=80&w=800&auto=format&fit=crop',
+        image_url: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?q=80&w=800&auto=format&fit=crop',
         stock_quantity: 40,
         is_available: true,
         is_featured: true,
@@ -85,7 +85,7 @@ const MOCK_PRODUCTS: Product[] = [
         short_description: 'Classic crunchy Nigerian snack with nutmeg notes.',
         price: 2500,
         category: 'Snacks',
-        image_url: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?q=80&w=800&auto=format&fit=crop',
+        image_url: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=800&auto=format&fit=crop',
         stock_quantity: 30,
         is_available: true,
         is_featured: true,
@@ -101,7 +101,7 @@ const MOCK_PRODUCTS: Product[] = [
         short_description: 'Soft, airy fried dough balls - a street food favorite.',
         price: 1000,
         category: 'Snacks',
-        image_url: 'https://images.unsplash.com/photo-1589119908995-c6837fa14848?q=80&w=800&auto=format&fit=crop',
+        image_url: 'https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=800&auto=format&fit=crop',
         stock_quantity: 60,
         is_available: true,
         is_featured: false,

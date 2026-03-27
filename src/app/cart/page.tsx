@@ -1,5 +1,4 @@
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import ShoppingCart from '@/components/ShoppingCart';
 
 export const metadata = {
@@ -26,8 +25,6 @@ export default function CartPage() {
                     <ShoppingCart />
                 </div>
             </div>
-
-            <Footer />
-        </main>
+</main>
     );
 }

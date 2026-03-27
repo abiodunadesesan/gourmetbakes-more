@@ -116,7 +116,7 @@ export default function OrderDetailsCard({ order }: OrderDetailsCardProps) {
                     </div>
                 </div>
                 <button 
-                    onClick={() => window.open('https://wa.me/2348001234567', '_blank')}
+                    onClick={() => window.open('https://wa.me/905338585872', '_blank')}
                     className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-2xl font-black transition-all flex items-center gap-2 w-full sm:w-auto justify-center"
                 >
                     <MessageCircle size={20} />

@@ -1,5 +1,4 @@
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import BulkOrderForm from "@/components/BulkOrderForm";
 
 export default function BulkOrderPage() {
@@ -22,8 +21,6 @@ export default function BulkOrderPage() {
                     <BulkOrderForm />
                 </div>
             </main>
-
-            <Footer />
-        </div>
+</div>
     );
 }

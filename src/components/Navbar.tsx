@@ -22,56 +22,54 @@ export default function Navbar() {
     return (
         <nav
             className={cn(
-                "fixed top-0 w-full z-50 transition-all duration-300 border-b",
+                "fixed top-0 w-full z-50 transition-all duration-500 border-b",
                 isScrolled
-                    ? "bg-white/90 backdrop-blur-md border-orange-100 py-3 shadow-sm"
-                    : "bg-transparent border-transparent py-5"
+                    ? "bg-white/95 backdrop-blur-md border-slate-200 py-3 shadow-lg shadow-slate-900/5"
+                    : "bg-white/20 backdrop-blur-sm border-white/20 py-4"
             )}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center">
                     {/* Logo */}
-                    <Link
-                        href="/"
-                        className="font-serif text-2xl font-bold tracking-tight group"
-                    >
-                        <span className="text-orange-500 group-hover:text-orange-600 transition-colors">Gourmet</span>
-                        <span className="text-slate-900">Bakes</span>
-                        <span className="text-yellow-600 text-lg ml-1">&amp; More</span>
+                    <Link href="/" className="flex items-center group">
+                        <div className="relative">
+                            <div className="absolute -inset-1 bg-orange-500/10 rounded-2xl scale-0 group-hover:scale-100 transition-transform duration-300" />
+                            <img
+                                src="/logo.png"
+                                alt="Gourmet Bakes & More"
+                                className="relative h-12 sm:h-14 w-auto object-contain transition-all duration-300 group-hover:scale-105"
+                            />
+                        </div>
                     </Link>
 
                     {/* Desktop Nav links */}
-                    <div className="hidden md:flex items-center space-x-10">
-                        <Link
-                            href="#menu"
-                            className="text-sm uppercase tracking-widest text-slate-600 hover:text-orange-500 transition-colors font-semibold"
-                        >
-                            Menu
-                        </Link>
-                        <Link
-                            href="/about"
-                            className="text-sm uppercase tracking-widest text-slate-600 hover:text-orange-500 transition-colors font-semibold"
-                        >
-                            About
-                        </Link>
-                        <Link
-                            href="/bulk-orders"
-                            className="text-sm uppercase tracking-widest text-slate-600 hover:text-orange-500 transition-colors font-semibold"
-                        >
-                            Bulk Orders
-                        </Link>
-                        <Link
-                            href="/contact"
-                            className="text-sm uppercase tracking-widest text-slate-600 hover:text-orange-500 transition-colors font-semibold"
-                        >
-                            Contact
-                        </Link>
+                    <div className="hidden md:flex items-center space-x-8">
+                        {[
+                            { href: '/menu', label: 'Menu' },
+                            { href: '/about', label: 'About' },
+                            { href: '/bulk-orders', label: 'Bulk Orders' },
+                            { href: '/recipes', label: 'Recipes' },
+                            { href: '/gifts', label: 'Gifting', badge: 'New' },
+                            { href: '/contact', label: 'Contact' },
+                        ].map(({ href, label, badge }) => (
+                            <Link
+                                key={href}
+                                href={href}
+                                className="relative text-sm font-semibold text-slate-800 hover:text-orange-500 transition-colors tracking-wide flex items-center gap-1.5 group"
+                            >
+                                {label}
+                                {badge && (
+                                    <span className="bg-orange-500 text-white text-[9px] uppercase font-black px-1.5 py-0.5 rounded-full">{badge}</span>
+                                )}
+                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300 rounded-full" />
+                            </Link>
+                        ))}
                     </div>
 
                     {/* Actions */}
                     <div className="flex items-center space-x-5">
                         <Link
-                            href="https://wa.me/2348001234567"
+                            href="https://wa.me/905338585872"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-slate-600 hover:text-green-600 transition-colors bg-slate-100 p-2 rounded-full hidden sm:block"
@@ -138,6 +136,21 @@ export default function Navbar() {
                         onClick={() => setIsMenuOpen(false)}
                     >
                         Bulk Orders
+                    </Link>
+                    <Link
+                        href="/recipes"
+                        className="text-sm font-bold uppercase tracking-widest text-slate-800"
+                        onClick={() => setIsMenuOpen(false)}
+                    >
+                        Recipes
+                    </Link>
+                    <Link
+                        href="/gifts"
+                        className="text-sm font-bold uppercase tracking-widest text-slate-800 flex items-center gap-2"
+                        onClick={() => setIsMenuOpen(false)}
+                    >
+                        Gifting
+                        <span className="bg-orange-100 text-orange-600 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full">New</span>
                     </Link>
                     <Link
                         href="/contact"

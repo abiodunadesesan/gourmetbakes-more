@@ -1,5 +1,4 @@
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import CateringForm from "@/components/CateringForm";
 
 export default function CateringPage() {
@@ -22,8 +21,6 @@ export default function CateringPage() {
                     <CateringForm />
                 </div>
             </main>
-
-            <Footer />
-        </div>
+</div>
     );
 }

@@ -12,7 +12,7 @@ export default function BulkOrderError({ error, onRetry }: BulkOrderErrorProps) 
         <div className="max-w-2xl mx-auto py-12 px-4 animate-in fade-in zoom-in-95 duration-700">
             <div className="bg-white rounded-[3rem] p-12 shadow-2xl border border-red-50 text-center relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-2 bg-red-500"></div>
-                
+
                 <div className="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
                     <AlertCircle size={40} />
                 </div>
@@ -36,7 +36,7 @@ export default function BulkOrderError({ error, onRetry }: BulkOrderErrorProps) 
                         <span>Try Again</span>
                     </button>
                     <Link
-                        href="https://wa.me/2348001234567"
+                        href="https://wa.me/905338585872"
                         target="_blank"
                         className="w-full sm:w-auto px-8 py-4 bg-green-500 text-white rounded-2xl font-black flex items-center justify-center gap-2 hover:bg-green-600 transition-all active:scale-95 shadow-lg shadow-green-100"
                     >

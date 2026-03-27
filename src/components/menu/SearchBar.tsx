@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Search, X } from "lucide-react";
 
 interface SearchBarProps {
@@ -16,17 +16,36 @@ export default function SearchBar({
 }: SearchBarProps) {
     const [query, setQuery] = useState(initialValue);
 
+    // Always keep the latest onSearch in a ref — this means the debounce effect
+    // never needs `onSearch` as a dependency, eliminating a key leg of the reload loop.
+    const onSearchRef = useRef(onSearch);
     useEffect(() => {
-        setQuery(initialValue);
+        onSearchRef.current = onSearch;
+    });
+
+    // Sync query if the URL-driven initialValue changes externally (e.g. clearing a filter)
+    const prevInitial = useRef(initialValue);
+    useEffect(() => {
+        if (initialValue !== prevInitial.current) {
+            prevInitial.current = initialValue;
+            setQuery(initialValue);
+        }
     }, [initialValue]);
 
+    // Debounced search — ONLY fires when the user changes the input.
+    // isMounted guard prevents firing onSearch("") on the very first render,
+    // which would trigger router.push → searchParams change → re-render loop.
+    const isMounted = useRef(false);
     useEffect(() => {
+        if (!isMounted.current) {
+            isMounted.current = true;
+            return;
+        }
         const handler = setTimeout(() => {
-            onSearch(query);
-        }, 300);
-
+            onSearchRef.current(query);
+        }, 400);
         return () => clearTimeout(handler);
-    }, [query, onSearch]);
+    }, [query]); // ← only depends on query, never on onSearch
 
     return (
         <div className="relative group w-full">

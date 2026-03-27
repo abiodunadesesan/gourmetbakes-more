@@ -1,5 +1,7 @@
+'use client';
+
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Plus, Minus, ShoppingCart, Check, Star, Eye } from 'lucide-react';
 import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
@@ -16,26 +18,30 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
     const [quantity, setQuantity] = useState(1);
     const [isAdded, setIsAdded] = useState(false);
 
-    const handleAddToCart = (e: React.MouseEvent) => {
+    const handleAddToCart = useCallback((e: React.MouseEvent) => {
         e.stopPropagation(); // Don't trigger onViewDetails
         addToCart(product, quantity);
         setIsAdded(true);
         setTimeout(() => setIsAdded(false), 2000);
-    };
+    }, [addToCart, product, quantity]);
 
-    const increment = (e: React.MouseEvent) => {
+    const increment = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
         setQuantity(q => q + 1);
-    };
+    }, []);
 
-    const decrement = (e: React.MouseEvent) => {
+    const decrement = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
         setQuantity(q => Math.max(1, q - 1));
-    };
+    }, []);
+
+    const handleViewDetails = useCallback(() => {
+        onViewDetails?.(product);
+    }, [onViewDetails, product]);
 
     return (
         <div
-            onClick={() => onViewDetails?.(product)}
+            onClick={handleViewDetails}
             className="group bg-white rounded-3xl border border-slate-100 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-orange-100 hover:-translate-y-2 flex flex-col h-full cursor-pointer active:scale-[0.98]"
         >
             {/* Image Container */}

@@ -1,5 +1,4 @@
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import FounderSection from "@/components/FounderSection";
 import MissionSection from "@/components/MissionSection";
 import QualitySection from "@/components/QualitySection";
@@ -8,7 +7,7 @@ import CTA from "@/components/CTA";
 
 export const metadata = {
     title: 'Our Story | GourmetBakes & More',
-    description: 'Learn about GourmetBakes & More, our founder Chioma, and our commitment to authentic Nigerian flavors.',
+    description: 'Learn about GourmetBakes & More, our founder VeeJb, and our commitment to authentic Nigerian flavors.',
 };
 
 export default function AboutPage() {
@@ -36,8 +35,6 @@ export default function AboutPage() {
                 <TestimonialSection />
                 <CTA />
             </main>
-
-            <Footer />
-        </div>
+</div>
     );
 }

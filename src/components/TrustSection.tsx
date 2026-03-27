@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from 'react';
 import { ShieldCheck, Truck, Users, Star } from 'lucide-react';
 
 const stats = [
@@ -19,19 +22,38 @@ const stats = [
 ];
 
 export default function TrustSection() {
+    // Activate scroll-reveal on mount (runs once, globally for this section)
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            }),
+            { threshold: 0.1 }
+        );
+        document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => observer.observe(el));
+        return () => observer.disconnect();
+    }, []);
+
     return (
         <section className="py-24 bg-slate-50 relative overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Subtle decorative blob */}
+            <div className="absolute -top-32 -right-32 w-96 h-96 bg-orange-100 rounded-full opacity-40 blur-3xl pointer-events-none" />
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                    {/* Testimonial Column (Span 2 for desktop layout) */}
-                    <div className="lg:col-span-1 bg-white p-10 rounded-3xl border border-slate-100 shadow-sm relative">
+
+                    {/* Testimonial */}
+                    <div className="reveal lg:col-span-1 bg-white p-10 rounded-3xl border border-slate-100 shadow-sm relative">
                         <div className="flex gap-1 mb-6">
                             {[...Array(5)].map((_, i) => (
                                 <Star key={i} size={18} className="fill-orange-500 text-orange-500" />
                             ))}
                         </div>
                         <p className="text-xl font-serif text-slate-900 mb-8 leading-relaxed italic">
-                            "The Agege bread is exactly how I remember it from Lagos—soft, stretchy, and perfect with some Ewa Agoyin. GourmetBakes truly brings a piece of home to my doorstep."
+                            &ldquo;The Agege bread is exactly how I remember it from Lagos—soft, stretchy, and perfect with some Ewa Agoyin. GourmetBakes truly brings a piece of home to my doorstep.&rdquo;
                         </p>
                         <div className="flex items-center gap-4">
                             <div className="h-12 w-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-lg">
@@ -45,19 +67,18 @@ export default function TrustSection() {
                     </div>
 
                     {/* Stats Grid */}
-                    <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="reveal-stagger lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-8">
                         {stats.map((stat, idx) => (
                             <div key={idx} className="flex flex-col items-center md:items-start text-center md:text-left">
                                 <div className="h-14 w-14 rounded-2xl bg-orange-500 text-white flex items-center justify-center mb-6 shadow-lg shadow-orange-200">
                                     <stat.icon size={28} />
                                 </div>
                                 <h3 className="text-lg font-bold text-slate-900 mb-3">{stat.title}</h3>
-                                <p className="text-slate-500 text-sm leading-relaxed">
-                                    {stat.description}
-                                </p>
+                                <p className="text-slate-500 text-sm leading-relaxed">{stat.description}</p>
                             </div>
                         ))}
                     </div>
+
                 </div>
             </div>
         </section>
