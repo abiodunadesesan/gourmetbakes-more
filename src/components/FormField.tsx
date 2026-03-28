@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
+import { cn, textareaFitClasses } from '@/lib/utils';
 
 interface FormFieldProps extends React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
     label: string;
@@ -25,9 +25,9 @@ export default function FormField({
             </label>
             <Component
                 className={cn(
-                    "w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition-all outline-none text-slate-900 placeholder:text-slate-400 font-medium",
+                    "w-full min-w-0 px-4 py-3 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition-all outline-none text-slate-900 placeholder:text-slate-400 font-medium",
                     error ? "border-red-500 focus:border-red-500 focus:ring-red-100" : "",
-                    isTextArea ? "min-h-[120px] resize-none" : ""
+                    isTextArea ? cn("min-h-[120px]", textareaFitClasses) : ""
                 )}
                 {...props as any}
             />

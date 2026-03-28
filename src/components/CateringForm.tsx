@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { PieChart, Users, Calendar, MapPin, ClipboardList, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, textareaFitClasses } from '@/lib/utils';
 import { Product } from '@/types';
 
 export default function CateringForm() {
@@ -222,7 +222,10 @@ export default function CateringForm() {
                             placeholder="Any additional information we should know?"
                             value={formData.specialRequests}
                             onChange={(e) => setFormData({ ...formData, specialRequests: e.target.value })}
-                            className="w-full px-5 py-4 rounded-2xl border-2 border-slate-50 focus:border-orange-500 outline-none font-medium resize-none"
+                            className={cn(
+                                "w-full px-5 py-4 rounded-2xl border-2 border-slate-50 focus:border-orange-500 outline-none font-medium min-h-[5.5rem]",
+                                textareaFitClasses
+                            )}
                         />
                     </div>
                 </div>
@@ -278,7 +281,10 @@ export default function CateringForm() {
                             rows={2}
                             value={formData.deliveryAddress}
                             onChange={(e) => setFormData({ ...formData, deliveryAddress: e.target.value })}
-                            className="w-full px-5 py-4 rounded-2xl border-2 border-slate-50 focus:border-orange-500 outline-none font-medium resize-none"
+                            className={cn(
+                                "w-full px-5 py-4 rounded-2xl border-2 border-slate-50 focus:border-orange-500 outline-none font-medium min-h-[4.5rem]",
+                                textareaFitClasses
+                            )}
                         />
                     </div>
                 </div>

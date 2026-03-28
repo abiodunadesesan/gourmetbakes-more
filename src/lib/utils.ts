@@ -6,6 +6,17 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }
 
+/**
+ * Textareas: long text wraps inside the field; extra height scrolls vertically.
+ * Pair with `rows` / `min-h-*` as needed.
+ */
+export const textareaFitClasses =
+    "min-w-0 break-words [overflow-wrap:anywhere] whitespace-pre-wrap resize-y overflow-y-auto max-h-[min(24rem,50vh)]";
+
+/** Shorter max height for small message fields */
+export const textareaFitCompactClasses =
+    "min-w-0 break-words [overflow-wrap:anywhere] whitespace-pre-wrap resize-y overflow-y-auto max-h-[min(14rem,35vh)]";
+
 /** Format a number as Nigerian Naira: ₦1,234.50 */
 export function formatCurrency(amount: number): string {
     return (

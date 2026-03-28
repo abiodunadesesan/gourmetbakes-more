@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, textareaFitClasses } from '@/lib/utils';
 
 export default function ContactForm() {
     const [formData, setFormData] = useState({
@@ -105,7 +105,10 @@ export default function ContactForm() {
                         rows={4}
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full px-5 py-4 rounded-2xl border-2 border-slate-50 focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition-all outline-none font-medium text-slate-900 resize-none"
+                        className={cn(
+                            "w-full px-5 py-4 rounded-2xl border-2 border-slate-50 focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition-all outline-none font-medium text-slate-900 min-h-[7rem]",
+                            textareaFitClasses
+                        )}
                     />
                 </div>
 

@@ -16,12 +16,14 @@ export default function TestimonialSection() {
             What Our Customers Say
           </h2>
           <p className="mt-3 text-slate-500 text-sm max-w-xl mx-auto">
-            Reviews rotate automatically — swipe or use the dots anytime.
+            Reviews rotate automatically every few seconds — swipe or use the dots anytime.
           </p>
         </div>
 
         <div className="max-w-lg mx-auto md:max-w-2xl">
           <MobileSnapCarousel
+            autoPlayMs={3000}
+            infinite
             items={customerTestimonials.map((t) => (
               <TestimonialCard key={t.id} testimonial={t} size="lg" />
             ))}

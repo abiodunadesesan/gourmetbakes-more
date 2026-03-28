@@ -17,7 +17,7 @@ type Props = {
   /**
    * Auto-advance interval in milliseconds. Set to `0` to disable.
    * Disabled automatically when `prefers-reduced-motion: reduce`.
-   * @default 6000
+   * @default 3000
    */
   autoPlayMs?: number;
   /**
@@ -28,13 +28,13 @@ type Props = {
   /**
    * After the user swipes, taps a dot, or touches the carousel, pause autoplay
    * for this many ms before resuming.
-   * @default 10000
+   * @default 6000
    */
   pauseAfterInteractionMs?: number;
 };
 
-const DEFAULT_AUTO_MS = 6000;
-const DEFAULT_PAUSE_RESUME_MS = 10_000;
+const DEFAULT_AUTO_MS = 3000;
+const DEFAULT_PAUSE_RESUME_MS = 6000;
 
 /**
  * Horizontal scroll-snap carousel (touch swipe + dot controls).

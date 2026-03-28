@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Star, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, textareaFitClasses } from '@/lib/utils';
 
 interface ReviewFormProps {
     productId: string;
@@ -105,7 +105,7 @@ export default function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             maxLength={50}
-                            className="w-full px-5 py-4 rounded-2xl border-2 border-slate-50 focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition-all outline-none font-bold text-slate-900 placeholder:text-slate-300"
+                            className="w-full min-w-0 px-5 py-4 rounded-2xl border-2 border-slate-50 focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition-all outline-none font-bold text-slate-900 placeholder:text-slate-300"
                         />
                     </div>
 
@@ -128,7 +128,10 @@ export default function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
                             onChange={(e) => setComment(e.target.value)}
                             maxLength={500}
                             rows={4}
-                            className="w-full px-5 py-4 rounded-2xl border-2 border-slate-50 focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition-all outline-none font-medium text-slate-900 placeholder:text-slate-300 resize-none"
+                            className={cn(
+                                "w-full px-5 py-4 rounded-2xl border-2 border-slate-50 focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition-all outline-none font-medium text-slate-900 placeholder:text-slate-300 min-h-[7rem]",
+                                textareaFitClasses
+                            )}
                         />
                     </div>
                 </div>

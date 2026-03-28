@@ -5,6 +5,7 @@ import { Truck, Loader2, Building2, Package, User, Clock, CreditCard, AlertCircl
 import ProductPicker from './ProductPicker';
 import BulkOrderConfirmation from './BulkOrderConfirmation';
 import BulkOrderError from './BulkOrderError';
+import { cn, textareaFitClasses } from '@/lib/utils';
 
 export default function BulkOrderForm() {
     const [selectedProducts, setSelectedProducts] = useState<any[]>([]);
@@ -120,7 +121,10 @@ export default function BulkOrderForm() {
                             maxLength={300}
                             value={formData.custom_products_description}
                             onChange={(e) => setFormData({ ...formData, custom_products_description: e.target.value })}
-                            className="w-full px-6 py-4 rounded-2xl border-2 border-slate-50 focus:border-orange-500 outline-none font-medium h-32 resize-none transition-all"
+                            className={cn(
+                                "w-full px-6 py-4 rounded-2xl border-2 border-slate-50 focus:border-orange-500 outline-none font-medium min-h-[8rem] transition-all",
+                                textareaFitClasses
+                            )}
                         />
                         <div className="flex justify-end">
                             <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">
@@ -186,7 +190,10 @@ export default function BulkOrderForm() {
                             placeholder="E.g., deliver to back entrance, contact me 1 hour before arrival"
                             value={formData.delivery_instructions}
                             onChange={(e) => setFormData({ ...formData, delivery_instructions: e.target.value })}
-                            className="w-full px-6 py-4 rounded-2xl border-2 border-slate-50 focus:border-blue-500 outline-none font-medium h-24 resize-none"
+                            className={cn(
+                                "w-full px-6 py-4 rounded-2xl border-2 border-slate-50 focus:border-blue-500 outline-none font-medium min-h-[6rem]",
+                                textareaFitClasses
+                            )}
                         />
                     </div>
                 </div>

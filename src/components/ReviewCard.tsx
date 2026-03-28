@@ -42,7 +42,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
             </div>
 
             {review.comment ? (
-                <p className="text-slate-600 text-sm leading-relaxed font-medium">
+                <p className="text-slate-600 text-sm leading-relaxed font-medium break-words [overflow-wrap:anywhere]">
                     {review.comment}
                 </p>
             ) : (

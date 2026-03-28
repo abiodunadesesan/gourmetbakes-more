@@ -54,10 +54,12 @@ export default function TrustSection() {
                             What customers say
                         </h3>
                         <p className="text-slate-500 text-xs sm:text-sm">
-                            Reviews rotate automatically — swipe or use the dots anytime.
+                            Reviews rotate automatically every few seconds — swipe or use the dots anytime.
                         </p>
                         <div className="-mx-1">
                             <MobileSnapCarousel
+                                autoPlayMs={3000}
+                                infinite
                                 items={homeSpotlightTestimonials.map((t) => (
                                     <TestimonialCard key={t.id} testimonial={t} size="sm" />
                                 ))}

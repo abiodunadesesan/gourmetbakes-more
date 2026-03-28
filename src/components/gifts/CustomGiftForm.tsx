@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Calendar, Send, Sparkles } from 'lucide-react';
+import { cn, textareaFitClasses } from '@/lib/utils';
 
 export default function CustomGiftForm() {
     const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -189,7 +190,10 @@ export default function CustomGiftForm() {
                                 onChange={e => setFormData({...formData, special_requests: e.target.value})} 
                                 maxLength={500} 
                                 rows={4} 
-                                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-all resize-none" 
+                                className={cn(
+                                    "w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-all min-h-[6rem]",
+                                    textareaFitClasses
+                                )}
                                 placeholder="Any allergies? Preferred themes? Specific messages to include?"
                             />
                         </div>

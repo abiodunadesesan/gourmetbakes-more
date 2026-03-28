@@ -54,8 +54,8 @@ export function TestimonialCard({ testimonial: t, size = "lg" }: Props) {
       <p
         className={
           lg
-            ? "text-slate-600 text-base sm:text-lg font-serif italic leading-relaxed flex-1 mb-8"
-            : "text-slate-600 text-sm sm:text-base font-serif italic leading-relaxed flex-1 mb-6"
+            ? "text-slate-600 text-base sm:text-lg font-serif italic leading-relaxed flex-1 mb-8 min-w-0 break-words [overflow-wrap:anywhere] text-pretty"
+            : "text-slate-600 text-sm sm:text-base font-serif italic leading-relaxed flex-1 mb-6 min-w-0 break-words [overflow-wrap:anywhere] text-pretty"
         }
       >
         &ldquo;{t.quote}&rdquo;

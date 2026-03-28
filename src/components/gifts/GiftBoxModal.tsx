@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { X, Calendar, PenLine, User, ShoppingBag, Check } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { cn, textareaFitCompactClasses } from '@/lib/utils';
 
 interface Props {
     box: any;
@@ -137,7 +138,10 @@ export default function GiftBoxModal({ box, onClose, onRequestCustom }: Props) {
                                     rows={2}
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
-                                    className="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none transition-all resize-none"
+                                    className={cn(
+                                        "w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none transition-all min-h-[3.25rem]",
+                                        textareaFitCompactClasses
+                                    )}
                                     placeholder="Write a heartfelt note..."
                                 />
                             </div>
