@@ -59,12 +59,16 @@ See `.env.example` for a template.
 
 ### Noupe AI chatbot (optional)
 
-[Noupe](https://www.noupe.com/) trains an AI assistant on your **public website pages** and adds a support widget. After you sign in, use **Train** (enter your site URL), then **Get Your Code** and copy the script `src` into:
+[Noupe](https://www.noupe.com/) trains an AI assistant on your **public website pages** and adds a support widget.
 
-| Variable | Description |
-| -------- | ----------- |
-| `NEXT_PUBLIC_NOUPE_SCRIPT_URL` | The `src` URL from Noupe’s embed snippet |
-| `NEXT_PUBLIC_NOUPE_WIDGET_ID` | Optional; only if your snippet uses a separate widget ID (we set `data-widget-id` on the script tag) |
+**Production site to train:** [https://gourmetbakes.vercel.app](https://gourmetbakes.vercel.app) — in Noupe use **Train**, paste that URL (not `localhost`), run training, then **Get Your Code**.
+
+| Variable | Where | Description |
+| -------- | ----- | ----------- |
+| `NEXT_PUBLIC_NOUPE_SCRIPT_URL` | Vercel env + `.env.local` for dev | The `src` URL from Noupe’s embed snippet |
+| `NEXT_PUBLIC_NOUPE_WIDGET_ID` | Same | Optional; only if your snippet uses a separate widget ID |
+
+On **Vercel**: Project → **Settings** → **Environment Variables** → add the variables for **Production** (and Preview if you want), then **Redeploy**. Without this, the widget only works where `.env.local` is present.
 
 Embed guides: [noupe.com/embed-guide](https://www.noupe.com/embed-guide). The widget is loaded from `src/components/NoupeChatbot.tsx` in the root layout.
 
