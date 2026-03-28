@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import { sendWhatsAppMessage, normalizePhoneForWhatsApp } from '@/lib/whatsapp';
+import { sendWhatsAppMessage, normalizePhoneForWhatsApp, notifyShopWhatsApp } from '@/lib/whatsapp';
 import { escapeHtml, sendInboundNotificationEmail } from '@/lib/inboundEmail';
 
 export async function POST(req: Request) {
@@ -77,27 +77,27 @@ ${custom_products_description ? `<p style="font-family:system-ui,sans-serif"><st
             html: emailHtml,
         });
 
-        // 2. Prepare WhatsApp message for admin
-        const ADMIN_PHONE = process.env.ADMIN_PHONE;
-        if (ADMIN_PHONE) {
-            const productSummary = products.map((p: any) => `- ${p.name}: ${p.quantity} units`).join('\n') || 'Custom request only';
-            
-            const message = `🎉 *New Bulk Order Request* from ${full_name}\n\n` +
-                `📦 *Products:*\n${productSummary}\n` +
-                (custom_products_description ? `📝 *Custom:* ${custom_products_description}\n` : '') +
-                `🔢 *Total:* ${total_units} units\n\n` +
-                `📍 *Delivery:* ${delivery_address}\n` +
-                `📅 *Date:* ${preferred_delivery_date} (${delivery_time_window})\n` +
-                `💼 *Purpose:* ${purpose}\n` +
-                `💰 *Budget:* ${estimated_budget || 'Not specified'}\n` +
-                `💳 *Terms:* ${payment_terms}\n\n` +
-                `📞 *Contact:* ${phone} | ${email}\n` +
-                (company_name ? `🏢 *Company:* ${company_name}\n` : '') +
-                `📝 *Notes:* ${additional_notes || 'None'}\n\n` +
-                `👉 Reply to discuss details and confirm order.`;
+        const productSummaryForWa =
+            Array.isArray(products) && products.length > 0
+                ? products.map((p: { name?: string; quantity?: number }) => `- ${p.name}: ${p.quantity} units`).join('\n')
+                : 'Custom request only';
 
-            await sendWhatsAppMessage(ADMIN_PHONE, message);
-        }
+        const adminWaMsg =
+            `🎉 *New Bulk Order Request* from ${full_name}\n\n` +
+            `📦 *Products:*\n${productSummaryForWa}\n` +
+            (custom_products_description ? `📝 *Custom:* ${custom_products_description}\n` : '') +
+            `🔢 *Total:* ${total_units} units\n\n` +
+            `📍 *Delivery:* ${delivery_address}\n` +
+            `📅 *Date:* ${preferred_delivery_date} (${delivery_time_window})\n` +
+            `💼 *Purpose:* ${purpose}\n` +
+            `💰 *Budget:* ${estimated_budget || 'Not specified'}\n` +
+            `💳 *Terms:* ${payment_terms}\n\n` +
+            `📞 *Contact:* ${phone} | ${email}\n` +
+            (company_name ? `🏢 *Company:* ${company_name}\n` : '') +
+            `📝 *Notes:* ${additional_notes || 'None'}\n\n` +
+            `👉 Reply to discuss details and confirm order.`;
+
+        await notifyShopWhatsApp(adminWaMsg);
 
         // 3. Send confirmation WhatsApp to customer
         const customerPhone = normalizePhoneForWhatsApp(phone);
@@ -105,9 +105,6 @@ ${custom_products_description ? `<p style="font-family:system-ui,sans-serif"><st
             const customerMsg = `Hello ${full_name}, thank you for your bulk order request with GourmetBakes & More! We've received your inquiry for ${total_units} units on ${preferred_delivery_date}. Our team will review it and get back to you with a quote within 24 hours.`;
             await sendWhatsAppMessage(customerPhone, customerMsg);
         }
-
-        // 4. (TBD) Send Email - Requires email service setup (SendGrid/Resend)
-        // For now, we rely on WhatsApp and Database.
 
         return NextResponse.json({ success: true, request_id: data.bulk_order_id });
     } catch (err: any) {

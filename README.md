@@ -45,15 +45,26 @@ Open [http://localhost:3000](http://localhost:3000) to see the landing page.
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Client       | Supabase anon/public key |
 | `SUPABASE_SERVICE_ROLE_KEY`     | API (server) | Supabase service role key |
 
-### Email (form submissions)
+### Email (Resend) & shop WhatsApp alerts
 
-Contact, catering, bulk order, and gift inquiry submissions can notify your inbox via [Resend](https://resend.com).
+With [Resend](https://resend.com) configured (`RESEND_API_KEY` + `INBOUND_FORM_EMAIL`), **you receive email** for:
+
+- Contact, catering, bulk order, and gift inquiry submissions
+- **Each new checkout order** placed via Menu → cart → checkout (`POST /api/orders`)
+
+With **Twilio WhatsApp** configured (`TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `WHATSAPP_BUSINESS_PHONE`, and `ADMIN_PHONE` for **your** inbox number), **you receive WhatsApp** for the same events (plus existing customer-facing confirmations where already implemented).
 
 | Variable | Description |
 | -------- | ----------- |
 | `RESEND_API_KEY` | API key from Resend dashboard |
-| `INBOUND_FORM_EMAIL` | Your email address (receives all submission notifications) |
+| `INBOUND_FORM_EMAIL` | Your email address (receives form + **new order** notifications) |
 | `RESEND_FROM_EMAIL` | Optional. Verified sender, e.g. `Gourmet Bakes <hello@yourdomain.com>`. If omitted, uses Resend’s test sender (`onboarding@resend.dev`), which only works for limited testing until you add a domain. |
+| `ADMIN_PHONE` | Your WhatsApp number for **shop** alerts (E.164 or Nigerian local starting with `0`); same Twilio setup as customer WhatsApp |
+
+**Noupe:** The embed script does **not** talk to this codebase by default. You can still get **Resend** notifications for chat in two ways:
+
+1. **Noupe dashboard** — If Noupe lets you set a notification email, use the same address as `INBOUND_FORM_EMAIL` so chat summaries land in the same inbox as forms and orders (no extra code).
+2. **Webhook** — If Noupe (or Zapier/Make connected to Noupe) can `POST` JSON to your site, use `POST /api/integrations/noupe-chat` with `NOUPE_CHAT_WEBHOOK_SECRET`; see **Noupe + Resend (webhook)** below.
 
 See `.env.example` for a template.
 
@@ -67,10 +78,57 @@ See `.env.example` for a template.
 | -------- | ----- | ----------- |
 | `NEXT_PUBLIC_NOUPE_SCRIPT_URL` | Vercel env + `.env.local` for dev | The `src` URL from Noupe’s embed snippet |
 | `NEXT_PUBLIC_NOUPE_WIDGET_ID` | Same | Optional; only if your snippet uses a separate widget ID |
+| `NOUPE_CHAT_WEBHOOK_SECRET` | API (server) only | Long random string; required to accept `POST /api/integrations/noupe-chat` |
 
 On **Vercel**: Project → **Settings** → **Environment Variables** → add the variables for **Production** (and Preview if you want), then **Redeploy**. Without this, the widget only works where `.env.local` is present.
 
 Embed guides: [noupe.com/embed-guide](https://www.noupe.com/embed-guide). The widget is loaded from `src/components/NoupeChatbot.tsx` in the root layout.
+
+#### Noupe + Resend (webhook)
+
+Noupe’s public docs do not guarantee a server **webhook** for every account. If yours does (or you use an automation tool that forwards transcripts), point it at:
+
+`https://<your-production-domain>/api/integrations/noupe-chat`
+
+**Headers (choose one):**
+
+- `Authorization: Bearer <NOUPE_CHAT_WEBHOOK_SECRET>`, or
+- `x-noupe-webhook-secret: <NOUPE_CHAT_WEBHOOK_SECRET>`
+
+**JSON body (at least one of `text`, `plainText`, or `messages`):**
+
+| Field | Required | Description |
+| ----- | -------- | ----------- |
+| `text` or `plainText` | * | Plain transcript |
+| `messages` | * | Array of `{ "role": "user", "content": "..." }` (and/or assistant turns); combined into plain text |
+| `subject` | | Overrides default `[Noupe chat] Conversation transcript` |
+| `sessionId`, `visitorEmail`, `visitorName`, `pageUrl` | | Shown above the transcript in the email |
+| `metadata` | | Any JSON object, appended for debugging |
+
+The route sends mail with the same Resend settings as form notifications (`RESEND_API_KEY`, `INBOUND_FORM_EMAIL`, optional `RESEND_FROM_EMAIL`). If Resend is not configured, the handler returns an error response.
+
+#### Orders vs chat (Noupe widget limits)
+
+The Noupe embed **does not** send chat to your checkout, Supabase orders, or Resend email. The bot’s replies come from **Noupe’s product** and what it learned when you **Train** on your URL—not from a custom “system prompt” in this repo. Many Noupe accounts **do not** expose a dashboard field for custom AI instructions; if yours doesn’t, you cannot paste a prompt there.
+
+**What you can do:**
+
+1. **On-site notice** — When Noupe is enabled, the app shows a small dismissible `NoupeOrderHint` near the chat, telling visitors to use **Menu** and checkout for real orders.
+2. **Training** — Make sure your **live** site clearly says that orders are placed via Menu → cart → checkout. In Noupe, run **Train** again on your production URL so crawled content reinforces that.
+3. **Ask Noupe** — Contact [Noupe support](https://www.noupe.com/) and ask whether they can adjust your bot’s behavior (e.g. not confirming orders from chat only). If they accept written guidelines, you can send something like:
+
+```text
+You are Sophie, a friendly assistant for GourmetBakes & More.
+
+ORDERS AND CHECKOUT (CRITICAL):
+- You cannot place orders, take payment, or confirm that the kitchen or email system received an order.
+- This chat is NOT connected to the website checkout, database, or notification emails.
+- Never say an order is "confirmed," "processing," "on the way," or "we will deliver" based only on what the user typed in this chat.
+- If the user wants to order, tell them clearly: add items on the website Menu, open the cart, and complete checkout there. Link to the Menu: https://gourmetbakes.vercel.app/menu (replace with your production domain if different).
+- You may help with product questions, delivery areas, bulk/catering info, and how to use the site.
+
+Keep replies concise and warm.
+```
 
 ## Database Setup
 

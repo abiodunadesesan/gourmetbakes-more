@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase';
-import { sendWhatsAppMessage, normalizePhoneForWhatsApp } from '@/lib/whatsapp';
+import { sendWhatsAppMessage, normalizePhoneForWhatsApp, notifyShopWhatsApp } from '@/lib/whatsapp';
 import { escapeHtml, sendInboundNotificationEmail } from '@/lib/inboundEmail';
 
 export async function POST(req: Request) {
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
 
         // 2. Send WhatsApp Notification to Business
         const bizMsg = `📋 *New Catering Inquiry*\n\n*Event:* ${eventName}\n*Date:* ${eventDate}\n*Guests:* ${guestCount}\n*Type:* ${eventType}\n\n*Contact:* ${name}\n*Phone:* ${phone}\n\n*Products:* ${products.join(', ')}\n\n*Address:* ${deliveryAddress}`;
-        await sendWhatsAppMessage(process.env.ADMIN_PHONE || '', bizMsg);
+        await notifyShopWhatsApp(bizMsg);
 
         // 3. Send Confirmation to Customer
         const userMsg = `Hi ${name}! 🎉 Your catering inquiry for "${eventName}" has been received. Our team will review your request and send a custom quote within 24 hours. Thank you!`;

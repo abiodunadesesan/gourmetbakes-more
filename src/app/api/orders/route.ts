@@ -5,6 +5,7 @@ import {
 } from '@/lib/supabase';
 import { OrderStatus } from '@/types';
 import { sendWhatsAppMessage, normalizePhoneForWhatsApp } from '@/lib/whatsapp';
+import { notifyShopOfNewCheckoutOrder } from '@/lib/orderShopNotifications';
 import {
     buildDevMockOrderFromCheckout,
     saveDevMockOrder,
@@ -39,6 +40,22 @@ async function fulfillDevMockOrder(body: {
 
     mockOrder.whatsapp_sent = true;
     saveDevMockOrder(mockOrder);
+
+    await notifyShopOfNewCheckoutOrder({
+        orderNumber: mockOrder.order_number,
+        orderId: mockOrder.order_id,
+        customerName: body.customer_info.name,
+        customerPhone: body.customer_info.phone,
+        customerEmail: body.customer_info.email,
+        deliveryAddress: `${body.customer_info.address}, ${body.customer_info.city}`,
+        deliveryNotes: body.customer_info.notes,
+        itemsSummaryText: itemListSummary,
+        subtotal: body.subtotal,
+        deliveryFee: body.deliveryFee,
+        total: body.totalAmount,
+        isDevMock: true,
+    });
+
     console.warn(
         '[orders] DEV: Order saved in memory (Supabase missing or unreachable). Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY for a real database.'
     );
@@ -208,6 +225,21 @@ export async function POST(req: Request) {
 
         // 7. Update status to reflect WhatsApp sent
         await supabase.from('orders').update({ whatsapp_sent: true }).eq('order_id', order.order_id);
+
+        // 8. Notify shop (Resend + ADMIN_PHONE WhatsApp) — failures are logged only
+        await notifyShopOfNewCheckoutOrder({
+            orderNumber,
+            orderId: order.order_id,
+            customerName: customer_info.name,
+            customerPhone: customer_info.phone,
+            customerEmail: customer_info.email,
+            deliveryAddress: `${customer_info.address}, ${customer_info.city}`,
+            deliveryNotes: customer_info.notes,
+            itemsSummaryText: itemListSummary,
+            subtotal,
+            deliveryFee,
+            total: totalAmount,
+        });
 
         return NextResponse.json(order);
     } catch (error: unknown) {

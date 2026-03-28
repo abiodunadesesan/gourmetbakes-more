@@ -44,3 +44,16 @@ export function normalizePhoneForWhatsApp(phone: string): string {
     }
     return normalized;
 }
+
+/**
+ * WhatsApp alert to the shop owner. Set `ADMIN_PHONE` (E.164 or local NG format).
+ * Requires Twilio + `WHATSAPP_BUSINESS_PHONE` like customer messages.
+ */
+export async function notifyShopWhatsApp(message: string): Promise<void> {
+    const raw = process.env.ADMIN_PHONE?.trim();
+    if (!raw) {
+        console.warn('[whatsapp] ADMIN_PHONE not set; skipping shop owner WhatsApp.');
+        return;
+    }
+    await sendWhatsAppMessage(normalizePhoneForWhatsApp(raw), message);
+}

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createServerSupabaseClient, isServerSupabaseConfigured } from '@/lib/supabase';
-import { sendWhatsAppMessage, normalizePhoneForWhatsApp } from '@/lib/whatsapp';
+import { sendWhatsAppMessage, normalizePhoneForWhatsApp, notifyShopWhatsApp } from '@/lib/whatsapp';
 import {
     isLikelySupabaseNetworkFailure,
     isMissingDatabaseObjectError,
@@ -89,7 +89,7 @@ export async function POST(req: Request) {
 
         // 3. Send WhatsApp Notification to Business
         const businessMsg = `💬 *New Contact Message*\n\n*From:* ${name}\n*Email:* ${email}\n*Phone:* ${phone || 'N/A'}\n*Subject:* ${subject}\n\n*Message:* \n${message}`;
-        await sendWhatsAppMessage(process.env.ADMIN_PHONE || '', businessMsg);
+        await notifyShopWhatsApp(businessMsg);
 
         // 4. Send Confirmation to User if phone provided
         if (phone) {

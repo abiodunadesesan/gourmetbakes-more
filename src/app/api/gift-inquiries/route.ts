@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase';
 import { escapeHtml, sendInboundNotificationEmail } from '@/lib/inboundEmail';
+import { notifyShopWhatsApp } from '@/lib/whatsapp';
 
 export async function POST(req: Request) {
     try {
@@ -56,6 +57,18 @@ export async function POST(req: Request) {
             text: emailText,
             html: emailHtml,
         });
+
+        const waGift =
+            `🎁 *Gift concierge inquiry*\n\n` +
+            `*Recipient:* ${body.recipient_name}\n` +
+            `*Occasion:* ${body.occasion}\n` +
+            `*Budget:* ${body.budget_range}\n` +
+            `*Delivery:* ${body.delivery_date}\n\n` +
+            `*From:* ${body.sender_name || '—'} | ${body.sender_email}\n` +
+            `*Phone:* ${body.sender_phone || '—'}\n\n` +
+            `*Items:* ${itemsLine}\n` +
+            (body.special_requests ? `*Notes:* ${body.special_requests}` : '');
+        await notifyShopWhatsApp(waGift);
 
         return NextResponse.json({ success: true, inquiry: data });
     } catch (error: any) {

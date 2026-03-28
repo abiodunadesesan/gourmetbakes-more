@@ -22,6 +22,7 @@ export const metadata: Metadata = {
 
 import { CartProvider } from "@/context/CartContext";
 import { NoupeChatbot } from "@/components/NoupeChatbot";
+import { NoupeOrderHint } from "@/components/NoupeOrderHint";
 
 export default function RootLayout({
   children,
@@ -39,6 +40,7 @@ export default function RootLayout({
           <Footer />
         </CartProvider>
         <NoupeChatbot />
+        <NoupeOrderHint />
       </body>
     </html>
   );
