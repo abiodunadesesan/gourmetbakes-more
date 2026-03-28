@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { createServerSupabaseClient } from '@/lib/supabase';
 import { sendWhatsAppMessage, normalizePhoneForWhatsApp, notifyShopWhatsApp } from '@/lib/whatsapp';
 import { escapeHtml, sendInboundNotificationEmail } from '@/lib/inboundEmail';
 
 export async function POST(req: Request) {
     try {
+        const supabase = createServerSupabaseClient();
         const body = await req.json();
         const {
             products,
@@ -107,8 +108,9 @@ ${custom_products_description ? `<p style="font-family:system-ui,sans-serif"><st
         }
 
         return NextResponse.json({ success: true, request_id: data.bulk_order_id });
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error('Bulk order submission error:', err);
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+        const message = err instanceof Error ? err.message : 'Unknown error';
+        return NextResponse.json({ success: false, error: message }, { status: 500 });
     }
 }

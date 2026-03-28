@@ -42,8 +42,7 @@ export function NoupeOrderHint() {
       role="status"
     >
       <p className="font-medium text-slate-800">
-        Chat is for questions only — it does{" "}
-        <span className="font-bold text-slate-900">not</span> send orders to our kitchen or email.
+        Chat is for questions only — it does not send orders to our kitchen or email.
       </p>
       <p className="mt-2">
         <Link

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { timingSafeEqual } from 'crypto';
 import { escapeHtml, sendInboundNotificationEmail } from '@/lib/inboundEmail';
+import { isBrowserBridgeNoiseOnlyTranscript } from '@/lib/noupePostMessageNoise';
 
 export const runtime = 'nodejs';
 
@@ -153,6 +154,14 @@ export async function POST(req: Request) {
     }
 
     text = truncate(text);
+
+    if (auth === 'browser' && isBrowserBridgeNoiseOnlyTranscript(text)) {
+        return NextResponse.json({
+            ok: true,
+            emailed: false,
+            skipped: 'noupe_ui_events_only',
+        });
+    }
 
     const metaLines: string[] = [];
     if (body.kind === 'order_intent') {

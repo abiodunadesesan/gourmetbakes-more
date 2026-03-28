@@ -1,5 +1,7 @@
 "use client";
 
+import { shouldIgnoreNoupePostMessage, isBrowserBridgeNoiseOnlyTranscript } from "@/lib/noupePostMessageNoise";
+
 declare global {
     interface Window {
         /** Populated by `NoupeChatbot`; use in DevTools to confirm the bridge. */
@@ -176,6 +178,12 @@ export function initNoupeBrowserBridge(): void {
     let timer: ReturnType<typeof setTimeout> | null = null;
 
     function sendPayload(text: string, orderIntent: boolean) {
+        if (isBrowserBridgeNoiseOnlyTranscript(text)) {
+            if (BRIDGE_DEBUG) {
+                console.info("[Noupe bridge] skip POST: transcript is only Noupe UI noise after debounce");
+            }
+            return;
+        }
         if (text.length < MIN_CHARS) {
             if (BRIDGE_DEBUG) {
                 console.warn("[Noupe bridge] skip POST: combined text shorter than MIN_CHARS", {
@@ -265,6 +273,15 @@ export function initNoupeBrowserBridge(): void {
     function handleMessage(ev: MessageEvent) {
         if (BRIDGE_DEBUG) {
             console.debug("[Noupe bridge] postMessage seen", { origin: ev.origin });
+        }
+
+        if (shouldIgnoreNoupePostMessage(ev.data)) {
+            if (BRIDGE_DEBUG) {
+                console.info("[Noupe bridge] ignored postMessage (Noupe UI / non-conversation event)", {
+                    origin: ev.origin,
+                });
+            }
+            return;
         }
 
         if (!isAllowedBridgeOrigin(ev.origin)) {

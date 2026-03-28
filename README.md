@@ -112,6 +112,14 @@ See `.env.example` for a template.
 
 On **Vercel**: Project → **Settings** → **Environment Variables** → add the variables for **Production** (and Preview if you want), then **Redeploy**. Without this, the widget only works where `.env.local` is present.
 
+**First message inside the Noupe widget:** The React app cannot inject text into Noupe’s chat transcript. In the **Noupe dashboard**, set the **custom first message** / welcome greeting (exact name depends on your plan) so visitors see this as soon as they open the chat:
+
+```text
+Chat is for questions only — it does not send orders to our kitchen or email. Order on the Menu and use checkout so we receive your order.
+```
+
+In the site UI, link **Order on the Menu** to `/menu` only in the separate `NoupeOrderHint` bubble (`src/components/NoupeOrderHint.tsx`), which is optional backup copy next to the launcher.
+
 Embed guides: [noupe.com/embed-guide](https://www.noupe.com/embed-guide). The widget is loaded from `src/components/NoupeChatbot.tsx` in the root layout.
 
 #### Noupe + Resend (single API route)
@@ -214,6 +222,8 @@ Keep replies concise and warm.
 ```
 
 ## Database Setup
+
+If **`POST /api/bulk-order/submit`** fails with *Could not find the `additional_notes` or `status` column of `bulk_order_requests`*, your project table predates those fields. Run **`sql/bulk_order_requests_additional_notes.sql`** once in the Supabase SQL Editor (then refresh the API schema cache if needed).
 
 Run the following in the **Supabase SQL Editor** to create all tables, indexes, triggers, and RLS policies:
 
