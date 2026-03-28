@@ -142,11 +142,14 @@ export function MobileSnapCarousel({
   if (items.length === 0) return null;
 
   return (
-    <div onPointerDownCapture={() => pauseAutoplayForInteraction()}>
+    <div
+      onPointerDownCapture={() => pauseAutoplayForInteraction()}
+      className="min-w-0 w-full max-w-full"
+    >
       <div
         ref={ref}
         className={[
-          "flex overflow-x-auto snap-x snap-mandatory gap-0 touch-pan-x",
+          "flex min-h-0 min-w-0 w-full max-w-full overflow-x-auto snap-x snap-mandatory gap-0 touch-pan-x",
           "[scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
           className,
         ].join(" ")}
@@ -154,7 +157,7 @@ export function MobileSnapCarousel({
         {items.map((node, i) => (
           <div
             key={i}
-            className="min-w-full shrink-0 snap-center snap-always box-border px-0.5"
+            className="box-border flex min-h-0 min-w-0 w-full max-w-full shrink-0 snap-center snap-always flex-col items-stretch justify-start px-1"
           >
             {node}
           </div>

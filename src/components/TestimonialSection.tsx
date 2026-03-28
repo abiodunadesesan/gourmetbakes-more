@@ -20,7 +20,7 @@ export default function TestimonialSection() {
           </p>
         </div>
 
-        <div className="max-w-lg mx-auto md:max-w-2xl">
+        <div className="mx-auto min-w-0 max-w-lg md:max-w-2xl">
           <MobileSnapCarousel
             autoPlayMs={3000}
             infinite

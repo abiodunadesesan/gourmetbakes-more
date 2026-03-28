@@ -49,7 +49,7 @@ export default function TrustSection() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
 
                     {/* Customer voices — horizontal swipe / scroll in narrow column */}
-                    <div className="reveal lg:col-span-1 space-y-3">
+                    <div className="reveal min-w-0 lg:col-span-1 space-y-3">
                         <h3 className="text-lg font-bold text-slate-900 font-serif">
                             What customers say
                         </h3>

@@ -28,12 +28,12 @@ export function TestimonialCard({ testimonial: t, size = "lg" }: Props) {
     <article
       className={
         lg
-          ? "bg-white p-8 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] border border-slate-100 shadow-sm h-full flex flex-col"
-          : "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm h-full flex flex-col min-h-[280px]"
+          ? "flex w-full max-w-full min-w-0 flex-col self-start overflow-x-hidden rounded-[2rem] border border-slate-100 bg-white p-8 shadow-sm sm:rounded-[2.5rem] sm:p-10"
+          : "flex w-full max-w-full min-w-0 flex-col self-start overflow-x-hidden rounded-2xl border border-slate-100 bg-white p-6 shadow-sm"
       }
     >
       {/* Quote icon + stars in normal flow (fixes mobile overlap / misalignment) */}
-      <div className="flex flex-wrap items-center gap-3 mb-5">
+      <div className="flex flex-shrink-0 flex-wrap items-center gap-3 mb-5">
         <div
           className={
             lg
@@ -54,14 +54,14 @@ export function TestimonialCard({ testimonial: t, size = "lg" }: Props) {
       <p
         className={
           lg
-            ? "text-slate-600 text-base sm:text-lg font-serif italic leading-relaxed flex-1 mb-8 min-w-0 break-words [overflow-wrap:anywhere] text-pretty"
-            : "text-slate-600 text-sm sm:text-base font-serif italic leading-relaxed flex-1 mb-6 min-w-0 break-words [overflow-wrap:anywhere] text-pretty"
+            ? "text-slate-600 text-base sm:text-lg font-serif italic leading-relaxed mb-8 w-full min-w-0 max-w-full hyphens-auto break-words [overflow-wrap:anywhere] text-pretty"
+            : "text-slate-600 text-sm sm:text-base font-serif italic leading-relaxed mb-6 w-full min-w-0 max-w-full hyphens-auto break-words [overflow-wrap:anywhere] text-pretty"
         }
       >
         &ldquo;{t.quote}&rdquo;
       </p>
 
-      <footer className="flex items-center gap-3 sm:gap-4 mt-auto pt-2 border-t border-slate-50">
+      <footer className="flex w-full min-w-0 shrink-0 items-center gap-3 sm:gap-4 border-t border-slate-50 pt-3">
         <div
           className={
             lg

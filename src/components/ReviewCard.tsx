@@ -11,11 +11,11 @@ interface ReviewCardProps {
 
 export default function ReviewCard({ review }: ReviewCardProps) {
     return (
-        <div className="bg-white border border-slate-50 rounded-3xl p-6 hover:bg-slate-50/50 transition-all group">
-            <div className="flex justify-between items-start mb-4">
-                <div className="space-y-1">
+        <div className="max-w-full min-w-0 overflow-x-hidden rounded-3xl border border-slate-50 bg-white p-6 transition-all group hover:bg-slate-50/50">
+            <div className="mb-4 flex min-w-0 items-start justify-between gap-3">
+                <div className="min-w-0 space-y-1">
                     <div className="flex items-center gap-2">
-                        <p className="font-black text-slate-900">{review.reviewer_name}</p>
+                        <p className="break-words font-black text-slate-900">{review.reviewer_name}</p>
                         {review.is_verified_purchase && (
                             <span className="flex items-center gap-1 bg-green-100 text-green-700 text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
                                 <CheckCircle size={10} />
@@ -36,13 +36,13 @@ export default function ReviewCard({ review }: ReviewCardProps) {
                         ))}
                     </div>
                 </div>
-                <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">
+                <p className="shrink-0 text-[10px] font-black uppercase tracking-widest text-slate-300">
                     {formatTimeAgo(review.created_at)}
                 </p>
             </div>
 
             {review.comment ? (
-                <p className="text-slate-600 text-sm leading-relaxed font-medium break-words [overflow-wrap:anywhere]">
+                <p className="w-full min-w-0 text-sm font-medium leading-relaxed text-slate-600 break-words hyphens-auto [overflow-wrap:anywhere]">
                     {review.comment}
                 </p>
             ) : (
