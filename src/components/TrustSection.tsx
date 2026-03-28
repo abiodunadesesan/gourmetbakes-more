@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect } from 'react';
-import { ShieldCheck, Truck, Users, Star } from 'lucide-react';
+import { useEffect } from "react";
+import { ShieldCheck, Truck, Users } from "lucide-react";
+import { homeSpotlightTestimonials } from "@/data/customer-testimonials";
+import { TestimonialCard } from "@/components/testimonials/TestimonialCard";
+import { MobileSnapCarousel } from "@/components/testimonials/MobileSnapCarousel";
 
 const stats = [
     {
@@ -38,31 +41,27 @@ export default function TrustSection() {
     }, []);
 
     return (
-        <section className="py-24 bg-slate-50 relative overflow-hidden">
+        <section className="py-24 pb-28 sm:pb-24 bg-slate-50 relative overflow-hidden">
             {/* Subtle decorative blob */}
             <div className="absolute -top-32 -right-32 w-96 h-96 bg-orange-100 rounded-full opacity-40 blur-3xl pointer-events-none" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
 
-                    {/* Testimonial */}
-                    <div className="reveal lg:col-span-1 bg-white p-10 rounded-3xl border border-slate-100 shadow-sm relative">
-                        <div className="flex gap-1 mb-6">
-                            {[...Array(5)].map((_, i) => (
-                                <Star key={i} size={18} className="fill-orange-500 text-orange-500" />
-                            ))}
-                        </div>
-                        <p className="text-xl font-serif text-slate-900 mb-8 leading-relaxed italic">
-                            &ldquo;The Agege bread is exactly how I remember it from Lagos—soft, stretchy, and perfect with some Ewa Agoyin. GourmetBakes truly brings a piece of home to my doorstep.&rdquo;
+                    {/* Customer voices — horizontal swipe / scroll in narrow column */}
+                    <div className="reveal lg:col-span-1 space-y-3">
+                        <h3 className="text-lg font-bold text-slate-900 font-serif">
+                            What customers say
+                        </h3>
+                        <p className="text-slate-500 text-xs sm:text-sm">
+                            Swipe or drag sideways to read more
                         </p>
-                        <div className="flex items-center gap-4">
-                            <div className="h-12 w-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-lg">
-                                AO
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-900">Adebayo O.</h4>
-                                <p className="text-slate-500 text-sm">Verified Customer</p>
-                            </div>
+                        <div className="-mx-1">
+                            <MobileSnapCarousel
+                                items={homeSpotlightTestimonials.map((t) => (
+                                    <TestimonialCard key={t.id} testimonial={t} size="sm" />
+                                ))}
+                            />
                         </div>
                     </div>
 

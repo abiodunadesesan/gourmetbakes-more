@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { X, ShoppingBag, Star, Plus, Minus, ShieldCheck, Truck, UtensilsCrossed, Share2, Check } from "lucide-react";
 import { Product } from "@/types";
 import { useCart } from "@/context/CartContext";
@@ -25,26 +25,58 @@ function nonEmptyImageUrl(url: string | null | undefined): string | null {
 
 export default function ProductDetailModal({ product, onClose }: ProductDetailModalProps) {
     const [quantity, setQuantity] = useState(1);
-    const [mainImage, setMainImage] = useState(PLACEHOLDER_PRODUCT_IMAGE);
+    const [activeSlide, setActiveSlide] = useState(0);
     const [added, setAdded] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const galleryScrollerRef = useRef<HTMLDivElement>(null);
     const { addToCart } = useCart();
 
     useEffect(() => {
         if (product) {
-            const urls = [product.image_url, ...(product.image_gallery || [])]
-                .map(nonEmptyImageUrl)
-                .filter((u): u is string => u !== null);
-            setMainImage(urls[0] ?? PLACEHOLDER_PRODUCT_IMAGE);
             setQuantity(1);
             setAdded(false);
+            setActiveSlide(0);
             // Lock body scroll
             document.body.style.overflow = "hidden";
+            requestAnimationFrame(() => {
+                galleryScrollerRef.current?.scrollTo({ left: 0 });
+            });
         } else {
             document.body.style.overflow = "unset";
         }
         return () => { document.body.style.overflow = "unset"; };
     }, [product]);
+
+    const gallery = product
+        ? [product.image_url, ...(product.image_gallery || [])]
+              .map(nonEmptyImageUrl)
+              .filter((u): u is string => u !== null)
+        : [];
+
+    const slides =
+        gallery.length > 0 ? gallery : product ? [PLACEHOLDER_PRODUCT_IMAGE] : [];
+
+    const syncSlideFromScroll = useCallback(() => {
+        const el = galleryScrollerRef.current;
+        if (!el || slides.length <= 1) return;
+        const w = el.clientWidth;
+        if (w <= 0) return;
+        const idx = Math.round(el.scrollLeft / w);
+        setActiveSlide(Math.max(0, Math.min(idx, slides.length - 1)));
+    }, [slides.length]);
+
+    useEffect(() => {
+        const el = galleryScrollerRef.current;
+        if (!el || !product) return;
+        el.addEventListener("scroll", syncSlideFromScroll, { passive: true });
+        const ro = new ResizeObserver(syncSlideFromScroll);
+        ro.observe(el);
+        syncSlideFromScroll();
+        return () => {
+            el.removeEventListener("scroll", syncSlideFromScroll);
+            ro.disconnect();
+        };
+    }, [syncSlideFromScroll, product?.product_id, slides.length]);
 
     if (!product) return null;
 
@@ -54,11 +86,13 @@ export default function ProductDetailModal({ product, onClose }: ProductDetailMo
         setTimeout(() => setAdded(false), 2000);
     };
 
-    const gallery = [product.image_url, ...(product.image_gallery || [])]
-        .map(nonEmptyImageUrl)
-        .filter((u): u is string => u !== null);
-
-    const mainImageSrc = nonEmptyImageUrl(mainImage) ?? PLACEHOLDER_PRODUCT_IMAGE;
+    const goToSlide = (index: number) => {
+        const el = galleryScrollerRef.current;
+        if (!el) return;
+        const w = el.clientWidth;
+        el.scrollTo({ left: index * w, behavior: "smooth" });
+        setActiveSlide(index);
+    };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm transition-all animate-in fade-in duration-300">
@@ -76,35 +110,70 @@ export default function ProductDetailModal({ product, onClose }: ProductDetailMo
 
                 {/* Left: Image Gallery */}
                 <div className="w-full md:w-1/2 bg-slate-50 relative flex flex-col">
-                    <div className="flex-1 relative aspect-square md:aspect-auto overflow-hidden">
-                        <img
-                            src={mainImageSrc}
-                            alt={product.name}
-                            className="w-full h-full object-cover transition-all duration-500"
-                        />
-                        <div className="absolute top-4 left-4">
+                    <div className="flex-1 relative aspect-square md:aspect-auto min-h-0 overflow-hidden">
+                        {/* Swipeable gallery (scroll-snap); tap thumbnails below to jump */}
+                        <div
+                            ref={galleryScrollerRef}
+                            role="region"
+                            aria-roledescription="carousel"
+                            aria-label={`${product.name} photos`}
+                            className={cn(
+                                "flex h-full w-full overflow-x-auto overflow-y-hidden snap-x snap-mandatory",
+                                "touch-pan-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                            )}
+                        >
+                            {slides.map((img, i) => (
+                                <div
+                                    key={`${img}-${i}`}
+                                    className="relative h-full min-w-full shrink-0 snap-center snap-always"
+                                >
+                                    <img
+                                        src={img}
+                                        alt={slides.length > 1 ? `${product.name} — photo ${i + 1} of ${slides.length}` : product.name}
+                                        className="w-full h-full object-cover"
+                                        draggable={false}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                        <div className="absolute top-4 left-4 z-10 pointer-events-none">
                             <span className="px-3 py-1.5 bg-white/90 backdrop-blur-md text-orange-600 text-xs font-bold uppercase tracking-widest rounded-full shadow-sm border border-orange-100">
                                 {product.category}
                             </span>
                         </div>
+                        {slides.length > 1 && (
+                            <div
+                                className="absolute bottom-4 left-0 right-0 z-10 flex justify-center gap-1.5 pointer-events-none md:hidden"
+                                aria-hidden
+                            >
+                                {slides.map((_, i) => (
+                                    <span
+                                        key={i}
+                                        className={cn(
+                                            "h-1.5 rounded-full transition-all duration-300",
+                                            i === activeSlide ? "w-6 bg-white shadow-sm" : "w-1.5 bg-white/50"
+                                        )}
+                                    />
+                                ))}
+                            </div>
+                        )}
                     </div>
 
-                    {/* Thumbnails */}
-                    {gallery.length > 1 && (
+                    {slides.length > 1 && (
                         <div className="p-4 flex gap-3 overflow-x-auto no-scrollbar bg-white border-t border-slate-100">
-                            {gallery.map((img, i) => (
+                            {slides.map((img, i) => (
                                 <button
                                     key={`${img}-${i}`}
                                     type="button"
-                                    onClick={() => setMainImage(img)}
+                                    onClick={() => goToSlide(i)}
                                     className={cn(
                                         "w-20 h-20 rounded-xl overflow-hidden shrink-0 transition-all border-2",
-                                        mainImageSrc === img
+                                        activeSlide === i
                                             ? "border-orange-500 ring-2 ring-orange-100 scale-95"
                                             : "border-transparent hover:border-orange-200"
                                     )}
                                 >
-                                    <img src={img} alt={`${product.name} ${i + 1}`} className="w-full h-full object-cover" />
+                                    <img src={img} alt={`${product.name} thumbnail ${i + 1}`} className="w-full h-full object-cover" />
                                 </button>
                             ))}
                         </div>

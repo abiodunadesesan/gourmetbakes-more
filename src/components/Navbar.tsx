@@ -19,13 +19,25 @@ export default function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    useEffect(() => {
+        if (!isMenuOpen) return;
+        const prev = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = prev;
+        };
+    }, [isMenuOpen]);
+
     return (
         <nav
             className={cn(
-                "fixed top-0 w-full z-50 transition-all duration-500 border-b",
-                isScrolled
-                    ? "bg-white/95 backdrop-blur-md border-slate-200 py-3 shadow-lg shadow-slate-900/5"
-                    : "bg-white/20 backdrop-blur-sm border-white/20 py-4"
+                "fixed top-0 w-full transition-all duration-500 border-b",
+                isMenuOpen ? "z-[100]" : "z-50",
+                isMenuOpen
+                    ? "bg-white border-slate-200 py-3 shadow-lg shadow-slate-900/10"
+                    : isScrolled
+                      ? "bg-white/95 backdrop-blur-md border-slate-200 py-3 shadow-lg shadow-slate-900/5"
+                      : "bg-white/20 backdrop-blur-sm border-white/20 py-4"
             )}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -116,66 +128,76 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Mobile Menu */}
-            <div
-                className={cn(
-                    "md:hidden absolute top-full left-0 w-full bg-white border-b border-orange-100 overflow-hidden transition-all duration-300",
-                    isMenuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
-                )}
-            >
-                <div className="px-4 py-6 space-y-4 flex flex-col items-center">
-                    <Link
-                        href="#menu"
-                        className="text-sm font-bold uppercase tracking-widest text-slate-800"
+            {/* Mobile: full-height solid sheet + dimmer — avoids see-through over cart/pages */}
+            {isMenuOpen && (
+                <>
+                    <button
+                        type="button"
+                        aria-label="Close menu"
+                        className="md:hidden fixed left-0 right-0 bottom-0 top-[5.25rem] z-[60] bg-slate-900/40"
                         onClick={() => setIsMenuOpen(false)}
+                    />
+                    <div
+                        className="md:hidden fixed left-0 right-0 bottom-0 top-[5.25rem] z-[70] flex min-h-0 flex-col overflow-y-auto bg-white shadow-[0_12px_40px_-4px_rgba(15,23,42,0.18)] border-t border-slate-100"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label="Main menu"
                     >
-                        Menu
-                    </Link>
-                    <Link
-                        href="/about"
-                        className="text-sm font-bold uppercase tracking-widest text-slate-800"
-                        onClick={() => setIsMenuOpen(false)}
-                    >
-                        About Us
-                    </Link>
-                    <Link
-                        href="/bulk-orders"
-                        className="text-sm font-bold uppercase tracking-widest text-slate-800"
-                        onClick={() => setIsMenuOpen(false)}
-                    >
-                        Bulk Orders
-                    </Link>
-                    <Link
-                        href="/recipes"
-                        className="text-sm font-bold uppercase tracking-widest text-slate-800"
-                        onClick={() => setIsMenuOpen(false)}
-                    >
-                        Recipes
-                    </Link>
-                    <Link
-                        href="/gifts"
-                        className="text-sm font-bold uppercase tracking-widest text-slate-800 flex items-center gap-2"
-                        onClick={() => setIsMenuOpen(false)}
-                    >
-                        Gifting
-                        <span className="bg-orange-100 text-orange-600 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full">New</span>
-                    </Link>
-                    <Link
-                        href="/contact"
-                        className="text-sm font-bold uppercase tracking-widest text-slate-800"
-                        onClick={() => setIsMenuOpen(false)}
-                    >
-                        Contact
-                    </Link>
-                    <Link
-                        href="#menu"
-                        className="w-full text-center rounded-full bg-orange-500 px-6 py-3 text-sm font-bold text-white shadow-md"
-                        onClick={() => setIsMenuOpen(false)}
-                    >
-                        Browse Products
-                    </Link>
-                </div>
-            </div>
+                        <div className="px-4 py-6 pb-10 space-y-4 flex flex-col items-center">
+                            <Link
+                                href="#menu"
+                                className="text-sm font-bold uppercase tracking-widest text-slate-800 py-1"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Menu
+                            </Link>
+                            <Link
+                                href="/about"
+                                className="text-sm font-bold uppercase tracking-widest text-slate-800 py-1"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                About Us
+                            </Link>
+                            <Link
+                                href="/bulk-orders"
+                                className="text-sm font-bold uppercase tracking-widest text-slate-800 py-1"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Bulk Orders
+                            </Link>
+                            <Link
+                                href="/recipes"
+                                className="text-sm font-bold uppercase tracking-widest text-slate-800 py-1"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Recipes
+                            </Link>
+                            <Link
+                                href="/gifts"
+                                className="text-sm font-bold uppercase tracking-widest text-slate-800 flex items-center gap-2 py-1"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Gifting
+                                <span className="bg-orange-100 text-orange-600 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full">New</span>
+                            </Link>
+                            <Link
+                                href="/contact"
+                                className="text-sm font-bold uppercase tracking-widest text-slate-800 py-1"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Contact
+                            </Link>
+                            <Link
+                                href="#menu"
+                                className="w-full max-w-xs text-center rounded-full bg-orange-500 px-6 py-3 text-sm font-bold text-white shadow-md mt-2"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Browse Products
+                            </Link>
+                        </div>
+                    </div>
+                </>
+            )}
         </nav>
     );
 }
