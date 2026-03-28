@@ -31,14 +31,22 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center group">
-                        <div className="relative">
+                    <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
+                        <div className="relative shrink-0">
                             <div className="absolute -inset-1 bg-orange-500/10 rounded-2xl scale-0 group-hover:scale-100 transition-transform duration-300" />
                             <img
                                 src="/logo.png"
-                                alt="Gourmet Bakes & More"
+                                alt=""
                                 className="relative h-12 sm:h-14 w-auto object-contain transition-all duration-300 group-hover:scale-105"
                             />
+                        </div>
+                        <div className="hidden min-[400px]:flex flex-col leading-none text-left">
+                            <span className="font-serif font-bold text-base sm:text-lg tracking-tight text-slate-900">
+                                GOURMET
+                            </span>
+                            <span className="text-[10px] sm:text-xs font-semibold tracking-[0.14em] text-slate-800 mt-0.5">
+                                BAKES &amp; MORE
+                            </span>
                         </div>
                     </Link>
 

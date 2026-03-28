@@ -1,15 +1,26 @@
 import { NextResponse } from 'next/server';
-import { createServerSupabaseClient } from '@/lib/supabase';
+import { createServerSupabaseClient, isServerSupabaseConfigured } from '@/lib/supabase';
 import { OrderStatus } from '@/types';
 import { sendWhatsAppMessage, normalizePhoneForWhatsApp } from '@/lib/whatsapp';
+import { getDevMockOrder } from '@/lib/mockOrderStore';
 
 export async function GET(
     req: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const supabase = createServerSupabaseClient();
         const { id } = await params;
+
+        const devOrder = getDevMockOrder(id);
+        if (devOrder) {
+            return NextResponse.json(devOrder);
+        }
+
+        if (!isServerSupabaseConfigured()) {
+            return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+        }
+
+        const supabase = createServerSupabaseClient();
 
         const { data: order, error } = await supabase
             .from('orders')

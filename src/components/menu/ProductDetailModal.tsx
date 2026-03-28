@@ -14,16 +14,28 @@ interface ProductDetailModalProps {
     onClose: () => void;
 }
 
+const PLACEHOLDER_PRODUCT_IMAGE =
+    "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=800";
+
+function nonEmptyImageUrl(url: string | null | undefined): string | null {
+    if (typeof url !== "string") return null;
+    const t = url.trim();
+    return t.length > 0 ? t : null;
+}
+
 export default function ProductDetailModal({ product, onClose }: ProductDetailModalProps) {
     const [quantity, setQuantity] = useState(1);
-    const [mainImage, setMainImage] = useState("");
+    const [mainImage, setMainImage] = useState(PLACEHOLDER_PRODUCT_IMAGE);
     const [added, setAdded] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const { addToCart } = useCart();
 
     useEffect(() => {
         if (product) {
-            setMainImage(product.image_url || "");
+            const urls = [product.image_url, ...(product.image_gallery || [])]
+                .map(nonEmptyImageUrl)
+                .filter((u): u is string => u !== null);
+            setMainImage(urls[0] ?? PLACEHOLDER_PRODUCT_IMAGE);
             setQuantity(1);
             setAdded(false);
             // Lock body scroll
@@ -42,7 +54,11 @@ export default function ProductDetailModal({ product, onClose }: ProductDetailMo
         setTimeout(() => setAdded(false), 2000);
     };
 
-    const gallery = [product.image_url, ...(product.image_gallery || [])].filter(Boolean);
+    const gallery = [product.image_url, ...(product.image_gallery || [])]
+        .map(nonEmptyImageUrl)
+        .filter((u): u is string => u !== null);
+
+    const mainImageSrc = nonEmptyImageUrl(mainImage) ?? PLACEHOLDER_PRODUCT_IMAGE;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm transition-all animate-in fade-in duration-300">
@@ -62,7 +78,7 @@ export default function ProductDetailModal({ product, onClose }: ProductDetailMo
                 <div className="w-full md:w-1/2 bg-slate-50 relative flex flex-col">
                     <div className="flex-1 relative aspect-square md:aspect-auto overflow-hidden">
                         <img
-                            src={mainImage}
+                            src={mainImageSrc}
                             alt={product.name}
                             className="w-full h-full object-cover transition-all duration-500"
                         />
@@ -78,16 +94,17 @@ export default function ProductDetailModal({ product, onClose }: ProductDetailMo
                         <div className="p-4 flex gap-3 overflow-x-auto no-scrollbar bg-white border-t border-slate-100">
                             {gallery.map((img, i) => (
                                 <button
-                                    key={i}
-                                    onClick={() => setMainImage(img!)}
+                                    key={`${img}-${i}`}
+                                    type="button"
+                                    onClick={() => setMainImage(img)}
                                     className={cn(
                                         "w-20 h-20 rounded-xl overflow-hidden shrink-0 transition-all border-2",
-                                        mainImage === img
+                                        mainImageSrc === img
                                             ? "border-orange-500 ring-2 ring-orange-100 scale-95"
                                             : "border-transparent hover:border-orange-200"
                                     )}
                                 >
-                                    <img src={img!} alt={`${product.name} ${i}`} className="w-full h-full object-cover" />
+                                    <img src={img} alt={`${product.name} ${i + 1}`} className="w-full h-full object-cover" />
                                 </button>
                             ))}
                         </div>

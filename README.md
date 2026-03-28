@@ -45,6 +45,29 @@ Open [http://localhost:3000](http://localhost:3000) to see the landing page.
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Client       | Supabase anon/public key |
 | `SUPABASE_SERVICE_ROLE_KEY`     | API (server) | Supabase service role key |
 
+### Email (form submissions)
+
+Contact, catering, bulk order, and gift inquiry submissions can notify your inbox via [Resend](https://resend.com).
+
+| Variable | Description |
+| -------- | ----------- |
+| `RESEND_API_KEY` | API key from Resend dashboard |
+| `INBOUND_FORM_EMAIL` | Your email address (receives all submission notifications) |
+| `RESEND_FROM_EMAIL` | Optional. Verified sender, e.g. `Gourmet Bakes <hello@yourdomain.com>`. If omitted, uses Resend’s test sender (`onboarding@resend.dev`), which only works for limited testing until you add a domain. |
+
+See `.env.example` for a template.
+
+### Noupe AI chatbot (optional)
+
+[Noupe](https://www.noupe.com/) trains an AI assistant on your **public website pages** and adds a support widget. After you sign in, use **Train** (enter your site URL), then **Get Your Code** and copy the script `src` into:
+
+| Variable | Description |
+| -------- | ----------- |
+| `NEXT_PUBLIC_NOUPE_SCRIPT_URL` | The `src` URL from Noupe’s embed snippet |
+| `NEXT_PUBLIC_NOUPE_WIDGET_ID` | Optional; only if your snippet uses a separate widget ID (we set `data-widget-id` on the script tag) |
+
+Embed guides: [noupe.com/embed-guide](https://www.noupe.com/embed-guide). The widget is loaded from `src/components/NoupeChatbot.tsx` in the root layout.
+
 ## Database Setup
 
 Run the following in the **Supabase SQL Editor** to create all tables, indexes, triggers, and RLS policies:

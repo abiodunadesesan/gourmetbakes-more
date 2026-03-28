@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase';
 import { sendWhatsAppMessage, normalizePhoneForWhatsApp } from '@/lib/whatsapp';
+import { escapeHtml, sendInboundNotificationEmail } from '@/lib/inboundEmail';
 
 export async function POST(req: Request) {
     try {
@@ -40,6 +41,24 @@ export async function POST(req: Request) {
             console.error('Catering Database Error:', error);
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
+
+        const productsLine = Array.isArray(products) ? products.join(', ') : String(products);
+        const emailText = `New catering inquiry\n\nEvent: ${eventName}\nDate: ${eventDate}\nGuests: ${guestCount}\nType: ${eventType}\n\nContact: ${name}\nPhone: ${phone}\nEmail: ${email}\n\nProducts requested:\n${productsLine}\n\nDietary: ${dietaryRequirements || '—'}\nSpecial requests: ${specialRequests || '—'}\n\nDelivery address:\n${deliveryAddress}`;
+        const emailHtml = `<h2 style="font-family:system-ui,sans-serif">Catering inquiry</h2>
+<table style="font-family:system-ui,sans-serif;font-size:15px;line-height:1.6">
+<tr><td style="font-weight:600;padding-right:12px">Event</td><td>${escapeHtml(eventName)}</td></tr>
+<tr><td style="font-weight:600;padding-right:12px">Date</td><td>${escapeHtml(eventDate)}</td></tr>
+<tr><td style="font-weight:600;padding-right:12px">Guests</td><td>${escapeHtml(String(guestCount))}</td></tr>
+<tr><td style="font-weight:600;padding-right:12px">Type</td><td>${escapeHtml(eventType)}</td></tr>
+<tr><td style="font-weight:600;padding-right:12px">Contact</td><td>${escapeHtml(name)} — ${escapeHtml(phone)} — <a href="mailto:${encodeURIComponent(email)}">${escapeHtml(email)}</a></td></tr>
+</table>
+<p style="font-family:system-ui,sans-serif"><strong>Products</strong><br/>${escapeHtml(productsLine)}</p>
+<p style="font-family:system-ui,sans-serif;white-space:pre-wrap"><strong>Address</strong><br/>${escapeHtml(deliveryAddress)}</p>`;
+        await sendInboundNotificationEmail({
+            subject: `[Gourmet Bakes] Catering: ${eventName}`,
+            text: emailText,
+            html: emailHtml,
+        });
 
         // 2. Send WhatsApp Notification to Business
         const bizMsg = `📋 *New Catering Inquiry*\n\n*Event:* ${eventName}\n*Date:* ${eventDate}\n*Guests:* ${guestCount}\n*Type:* ${eventType}\n\n*Contact:* ${name}\n*Phone:* ${phone}\n\n*Products:* ${products.join(', ')}\n\n*Address:* ${deliveryAddress}`;

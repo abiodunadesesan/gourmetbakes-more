@@ -123,11 +123,26 @@ export default function CheckoutForm() {
                 }),
             });
 
-            const validateData = await validateRes.json();
+            const validateData = await validateRes.json().catch(() => ({}));
+
+            if (!validateRes.ok) {
+                alert(
+                    validateData?.error
+                        ? `We could not verify your cart: ${validateData.error}`
+                        : 'We could not verify your cart. Please try again in a moment.'
+                );
+                setIsSubmitting(false);
+                return;
+            }
+
             if (!validateData.valid) {
-                const message = validateData.unavailable_items
-                    .map((item: any) => `${item.name}: ${item.reason}`)
-                    .join('\n');
+                const unavailable = Array.isArray(validateData.unavailable_items)
+                    ? validateData.unavailable_items
+                    : [];
+                const message =
+                    unavailable.length > 0
+                        ? unavailable.map((item: { name: string; reason: string }) => `${item.name}: ${item.reason}`).join('\n')
+                        : 'One or more items are no longer available.';
                 alert(`Some items in your cart are no longer available:\n\n${message}`);
                 setIsSubmitting(false);
                 return;

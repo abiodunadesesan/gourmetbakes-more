@@ -44,6 +44,11 @@ function MenuContent() {
     const minPrice = Number(searchParams.get("min_price")) || 500;
     const maxPrice = Number(searchParams.get("max_price")) || 20000;
     const inStock = searchParams.get("in_stock") === "true";
+    const openProductId = useMemo(
+        () => searchParams.get("product"),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [searchParamsString]
+    );
 
     // URL State Helpers — only depend on pathname & router, read searchParams from ref
     const updateUrl = useCallback((newParams: Record<string, string | null>) => {
@@ -106,6 +111,33 @@ function MenuContent() {
         fetchProducts();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchParamsString]);
+
+    // Deep link: /menu?product=<id> opens the product modal (e.g. from recipe cross-sell)
+    useEffect(() => {
+        if (!openProductId) return;
+
+        const inList = products.find((p) => p.product_id === openProductId);
+        if (inList) {
+            setSelectedProduct(inList);
+            return;
+        }
+
+        if (loading) return;
+
+        let cancelled = false;
+        fetch("/api/products?limit=100&page=1")
+            .then((res) => res.json())
+            .then((data: { products?: Product[] }) => {
+                if (cancelled || !data?.products) return;
+                const found = data.products.find((p) => p.product_id === openProductId);
+                if (found) setSelectedProduct(found);
+            })
+            .catch(() => {});
+
+        return () => {
+            cancelled = true;
+        };
+    }, [openProductId, products, loading]);
 
     // Memoised handlers
     const handlePriceChange = useCallback((range: [number, number]) => {

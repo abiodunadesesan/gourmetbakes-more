@@ -2,14 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-
-interface Product {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    image_url: string;
-}
+import type { Product } from '@/types';
 
 export default function RelatedProducts({ recipeId }: { recipeId: string }) {
     const [products, setProducts] = useState<Product[]>([]);
@@ -23,7 +16,7 @@ export default function RelatedProducts({ recipeId }: { recipeId: string }) {
                 const res = await fetch('/api/products?limit=3');
                 if (res.ok) {
                     const data = await res.json();
-                    if (data && data.products) {
+                    if (data && Array.isArray(data.products)) {
                         setProducts(data.products.slice(0, 3));
                     }
                 }
@@ -48,7 +41,7 @@ export default function RelatedProducts({ recipeId }: { recipeId: string }) {
             <h4 className="font-bold text-lg text-slate-800 mb-6">Want to skip the baking?</h4>
             <div className="space-y-6">
                 {products.map(p => (
-                    <Link href={`/menu/${p.id}`} key={p.id} className="group block text-left flex gap-4 items-center">
+                    <Link href={`/menu?product=${p.product_id}`} key={p.product_id} className="group block text-left flex gap-4 items-center">
                         <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-100">
                             {p.image_url ? (
                                 <img src={p.image_url} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />

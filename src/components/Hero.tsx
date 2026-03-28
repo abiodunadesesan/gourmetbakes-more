@@ -86,7 +86,7 @@ export default function Hero() {
                 transition={{ duration: 0.8, delay: 0.3, type: "spring" }}
                 className="hidden lg:block absolute right-[-5%] top-1/2 -translate-y-1/2 w-[48%] aspect-square rounded-full bg-orange-100/50 backdrop-blur-3xl overflow-hidden border-8 border-white/50 shadow-2xl"
             >
-                <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1550617931-e17a7b70dce2?q=80&w=2800&auto=format&fit=crop')] bg-cover bg-center mix-blend-multiply opacity-80"></div>
+                <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&q=80&w=1600')] bg-cover bg-center mix-blend-multiply opacity-80"></div>
             </motion.div>
         </section>
     );

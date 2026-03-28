@@ -68,7 +68,7 @@ export default function QualitySection() {
                             <div className="absolute -inset-4 bg-amber-100/50 rounded-[2.5rem] blur-2xl group-hover:bg-amber-200/50 transition-all duration-500"></div>
                             <div className="relative aspect-square overflow-hidden rounded-[2rem] border-8 border-white shadow-2xl">
                                 <img
-                                    src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?q=80&w=800&auto=format&fit=crop"
+                                    src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=800"
                                     alt="Freshly baked artisan goods"
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                 />

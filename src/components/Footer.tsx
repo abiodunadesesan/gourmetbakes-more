@@ -1,5 +1,20 @@
 import Link from "next/link";
-import { MessageCircle, Instagram, Facebook, Twitter, Phone, Mail, MapPin } from "lucide-react";
+import { MessageCircle, Instagram, Facebook, Phone, Mail, MapPin } from "lucide-react";
+
+function TikTokIcon({ size = 18 }: { size?: number }) {
+    return (
+        <svg
+            width={size}
+            height={size}
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="shrink-0"
+            aria-hidden
+        >
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+        </svg>
+    );
+}
 
 export default function Footer() {
     return (
@@ -8,26 +23,52 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
                     {/* Brand Section */}
                     <div className="space-y-6">
-                        <Link href="/" className="inline-block">
-                            <img 
-                                src="/logo.png" 
-                                alt="Gourmet Bakes & More" 
-                                className="h-16 sm:h-20 w-auto object-contain hover:opacity-90 transition-opacity" 
+                        <Link href="/" className="flex items-center gap-3 sm:gap-4 group w-fit">
+                            <img
+                                src="/logo.png"
+                                alt=""
+                                className="h-16 sm:h-20 w-auto object-contain shrink-0 group-hover:opacity-90 transition-opacity"
                             />
+                            <div className="flex flex-col leading-none text-left">
+                                <span className="font-serif font-bold text-lg sm:text-xl tracking-tight text-white">
+                                    GOURMET
+                                </span>
+                                <span className="text-xs sm:text-sm font-semibold tracking-[0.14em] text-slate-400 mt-1">
+                                    BAKES &amp; MORE
+                                </span>
+                            </div>
                         </Link>
                         <p className="text-slate-400 text-base leading-relaxed max-w-xs">
                             Bringing the authentic taste of Nigeria to your table. Freshly baked, culturally inspired, and delivered with love.
                         </p>
                         <div className="flex gap-4">
-                            <Link href="#" className="h-10 w-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-orange-500 transition-all">
+                            <a
+                                href="https://www.instagram.com/veejb_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="h-10 w-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-orange-500 transition-all text-white"
+                                aria-label="Gourmet Bakes on Instagram"
+                            >
                                 <Instagram size={18} />
-                            </Link>
-                            <Link href="#" className="h-10 w-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-orange-500 transition-all">
+                            </a>
+                            <a
+                                href="https://www.facebook.com/oriakhi.victory"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="h-10 w-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-orange-500 transition-all text-white"
+                                aria-label="Gourmet Bakes on Facebook"
+                            >
                                 <Facebook size={18} />
-                            </Link>
-                            <Link href="#" className="h-10 w-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-orange-500 transition-all">
-                                <Twitter size={18} />
-                            </Link>
+                            </a>
+                            <a
+                                href="https://www.tiktok.com/@big_veejb?is_from_webapp=1&sender_device=pc"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="h-10 w-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-orange-500 transition-all text-white"
+                                aria-label="Gourmet Bakes on TikTok"
+                            >
+                                <TikTokIcon size={18} />
+                            </a>
                         </div>
                     </div>
 
@@ -46,10 +87,10 @@ export default function Footer() {
                     <div>
                         <h4 className="text-white font-bold text-lg mb-6">Customer Care</h4>
                         <ul className="space-y-4">
-                            <li><Link href="#" className="text-slate-400 hover:text-orange-500 transition-colors">Shipping Policy</Link></li>
-                            <li><Link href="#" className="text-slate-400 hover:text-orange-500 transition-colors">Refunds & Returns</Link></li>
-                            <li><Link href="#" className="text-slate-400 hover:text-orange-500 transition-colors">Order Tracking</Link></li>
-                            <li><Link href="#" className="text-slate-400 hover:text-orange-500 transition-colors">FAQs</Link></li>
+                            <li><Link href="/shipping-policy" className="text-slate-400 hover:text-orange-500 transition-colors">Shipping Policy</Link></li>
+                            <li><Link href="/refunds-returns" className="text-slate-400 hover:text-orange-500 transition-colors">Refunds & Returns</Link></li>
+                            <li><Link href="/track-order" className="text-slate-400 hover:text-orange-500 transition-colors">Order Tracking</Link></li>
+                            <li><Link href="/faq" className="text-slate-400 hover:text-orange-500 transition-colors">FAQs</Link></li>
                         </ul>
                     </div>
 

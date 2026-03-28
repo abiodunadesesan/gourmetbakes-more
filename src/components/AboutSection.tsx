@@ -10,7 +10,7 @@ export default function AboutSection() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
                     <div className="relative h-[500px] sm:h-[600px] w-full group">
                         <Image
-                            src="https://images.unsplash.com/photo-1549590143-d5855148a9d5?q=80&w=1000&auto=format&fit=crop"
+                            src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=1000"
                             alt="Baker at work"
                             fill
                             className="object-cover grayscale hover:grayscale-0 transition-all duration-700 shadow-2xl"
