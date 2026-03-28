@@ -62,6 +62,9 @@ export async function POST(req: Request) {
             if (products && products.length > 0) {
                 return NextResponse.json(validateItems(items, products));
             }
+
+            // Query succeeded but no rows matched (empty table or IDs not in DB) — use mock catalog
+            usedFallback = true;
         } catch {
             usedFallback = true;
         }
