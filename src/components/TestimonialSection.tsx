@@ -15,25 +15,17 @@ export default function TestimonialSection() {
           <h2 className="text-4xl md:text-5xl font-serif font-bold text-slate-900">
             What Our Customers Say
           </h2>
-          <p className="mt-3 text-slate-500 text-sm max-w-xl mx-auto md:hidden">
-            Swipe sideways to read more reviews
+          <p className="mt-3 text-slate-500 text-sm max-w-xl mx-auto">
+            Reviews rotate automatically — swipe or use the dots anytime.
           </p>
         </div>
 
-        {/* Mobile: one card at a time, touch swipe + dots */}
-        <div className="md:hidden max-w-lg mx-auto">
+        <div className="max-w-lg mx-auto md:max-w-2xl">
           <MobileSnapCarousel
             items={customerTestimonials.map((t) => (
               <TestimonialCard key={t.id} testimonial={t} size="lg" />
             ))}
           />
-        </div>
-
-        {/* Tablet / desktop: grid */}
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {customerTestimonials.map((t) => (
-            <TestimonialCard key={t.id} testimonial={t} size="lg" />
-          ))}
         </div>
       </div>
     </section>

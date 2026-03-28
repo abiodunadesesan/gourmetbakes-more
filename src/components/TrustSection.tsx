@@ -54,7 +54,7 @@ export default function TrustSection() {
                             What customers say
                         </h3>
                         <p className="text-slate-500 text-xs sm:text-sm">
-                            Swipe or drag sideways to read more
+                            Reviews rotate automatically — swipe or use the dots anytime.
                         </p>
                         <div className="-mx-1">
                             <MobileSnapCarousel
