@@ -1,44 +1,26 @@
-import { NextResponse } from 'next/server'
-import { createServerSupabaseClient } from '@/lib/supabase'
-import type { ApiHealthResponse } from '@/types'
+import { NextResponse } from "next/server";
+import { getDatabaseConnectivity } from "@/lib/database-health";
+import type { ApiHealthResponse } from "@/types";
 
 export async function GET() {
-    const timestamp = new Date().toISOString()
+  const timestamp = new Date().toISOString();
+  const result = await getDatabaseConnectivity();
 
-    try {
-        const supabase = createServerSupabaseClient()
+  if (result.database === "connected") {
+    const body: ApiHealthResponse = {
+      status: "ok",
+      timestamp,
+      database: "connected",
+      productCount: result.productCount,
+    };
+    return NextResponse.json(body, { status: 200 });
+  }
 
-        // Lightweight connectivity check + product count
-        const { count, error } = await supabase
-            .from('products')
-            .select('product_id', { count: 'exact', head: true })
-
-        if (error) {
-            const body: ApiHealthResponse = {
-                status: 'error',
-                timestamp,
-                database: 'disconnected',
-                error: 'Unable to connect to database',
-            }
-            return NextResponse.json(body, { status: 503 })
-        }
-
-        const body: ApiHealthResponse = {
-            status: 'ok',
-            timestamp,
-            database: 'connected',
-            productCount: count ?? 0,
-        }
-        return NextResponse.json(body, { status: 200 })
-    } catch (err: unknown) {
-        const message =
-            err instanceof Error ? err.message : 'Internal server error'
-        const body: ApiHealthResponse = {
-            status: 'error',
-            timestamp,
-            error: message,
-            database: 'disconnected',
-        }
-        return NextResponse.json(body, { status: 500 })
-    }
+  const body: ApiHealthResponse = {
+    status: "error",
+    timestamp,
+    database: "disconnected",
+    error: result.error,
+  };
+  return NextResponse.json(body, { status: result.statusCode });
 }
