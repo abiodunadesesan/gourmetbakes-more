@@ -53,9 +53,6 @@ export default function TrustSection() {
                         <h3 className="text-lg font-bold text-slate-900 font-serif">
                             What customers say
                         </h3>
-                        <p className="text-slate-500 text-xs sm:text-sm">
-                            Reviews rotate automatically every few seconds — swipe or use the dots anytime.
-                        </p>
                         <div className="-mx-1">
                             <MobileSnapCarousel
                                 autoPlayMs={3000}

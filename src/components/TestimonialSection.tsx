@@ -15,9 +15,6 @@ export default function TestimonialSection() {
           <h2 className="text-4xl md:text-5xl font-serif font-bold text-slate-900">
             What Our Customers Say
           </h2>
-          <p className="mt-3 text-slate-500 text-sm max-w-xl mx-auto">
-            Reviews rotate automatically every few seconds — swipe or use the dots anytime.
-          </p>
         </div>
 
         <div className="mx-auto min-w-0 max-w-lg md:max-w-2xl">
