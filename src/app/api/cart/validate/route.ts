@@ -46,6 +46,7 @@ export async function POST(req: Request) {
 
         const productIds = items.map((i: CartLine) => i.product_id);
 
+        const isDev = process.env.NODE_ENV === 'development';
         let usedFallback = false;
 
         try {
@@ -63,10 +64,26 @@ export async function POST(req: Request) {
                 return NextResponse.json(validateItems(items, products));
             }
 
-            // Query succeeded but no rows matched (empty table or IDs not in DB) — use mock catalog
-            usedFallback = true;
-        } catch {
-            usedFallback = true;
+            // Query succeeded but no rows matched — do not use mock in production (would false-pass unknown IDs)
+            if (isDev) {
+                usedFallback = true;
+            } else {
+                return NextResponse.json(validateItems(items, products ?? []));
+            }
+        } catch (err) {
+            if (isDev) {
+                usedFallback = true;
+            } else {
+                console.error('[cart/validate] Database error:', err);
+                return NextResponse.json(
+                    {
+                        error: 'Unable to verify inventory. Please try again shortly.',
+                        valid: false,
+                        unavailable_items: [],
+                    },
+                    { status: 503 }
+                );
+            }
         }
 
         const mockRows = MOCK_PRODUCTS.filter((p) => productIds.includes(p.product_id)).map((p) => ({
@@ -77,8 +94,10 @@ export async function POST(req: Request) {
         }));
 
         const body = validateItems(items, mockRows);
-        if (usedFallback && process.env.NODE_ENV === 'development') {
-            console.warn('[cart/validate] Using mock catalog (database unavailable or empty).');
+        if (usedFallback && isDev) {
+            console.warn(
+                '[cart/validate] DEV: using mock catalog (database empty, unreachable, or query error).'
+            );
         }
         return NextResponse.json(body);
     } catch (error: any) {
