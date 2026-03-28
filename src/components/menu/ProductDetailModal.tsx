@@ -32,19 +32,21 @@ export default function ProductDetailModal({ product, onClose }: ProductDetailMo
     const { addToCart } = useCart();
 
     useEffect(() => {
-        if (product) {
-            setQuantity(1);
-            setAdded(false);
-            setActiveSlide(0);
-            // Lock body scroll
-            document.body.style.overflow = "hidden";
-            requestAnimationFrame(() => {
-                galleryScrollerRef.current?.scrollTo({ left: 0 });
-            });
-        } else {
-            document.body.style.overflow = "unset";
-        }
-        return () => { document.body.style.overflow = "unset"; };
+        if (!product) return;
+
+        const prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+
+        setQuantity(1);
+        setAdded(false);
+        setActiveSlide(0);
+        requestAnimationFrame(() => {
+            galleryScrollerRef.current?.scrollTo({ left: 0 });
+        });
+
+        return () => {
+            document.body.style.overflow = prevOverflow;
+        };
     }, [product]);
 
     const gallery = product
@@ -90,8 +92,8 @@ export default function ProductDetailModal({ product, onClose }: ProductDetailMo
         const el = galleryScrollerRef.current;
         if (!el) return;
         const w = el.clientWidth;
+        // Do not setActiveSlide here — smooth scroll fires scroll events; syncing there avoids flicker.
         el.scrollTo({ left: index * w, behavior: "smooth" });
-        setActiveSlide(index);
     };
 
     return (
