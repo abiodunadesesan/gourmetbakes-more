@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { CartProvider } from "@/context/CartContext";
+import { NoupeChatbot } from "@/components/NoupeChatbot";
+import { NoupeOrderHint } from "@/components/NoupeOrderHint";
 import "./globals.css";
 
 const inter = Inter({
@@ -20,10 +24,6 @@ export const metadata: Metadata = {
     "Premium Nigerian baked goods and delicacies — Meat Pies, Agege Bread, Cakes and more, delivered fresh to your door.",
 };
 
-import { CartProvider } from "@/context/CartContext";
-import { NoupeChatbot } from "@/components/NoupeChatbot";
-import { NoupeOrderHint } from "@/components/NoupeOrderHint";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,6 +41,7 @@ export default function RootLayout({
         </CartProvider>
         <NoupeChatbot />
         <NoupeOrderHint />
+        <Analytics />
       </body>
     </html>
   );
